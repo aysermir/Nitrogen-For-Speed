@@ -79,7 +79,7 @@ draw_left_black_line:
 	
 update_left_black_line_pixel: 
 	addi $t7, $s0, 65532
-	bgt $t0, $t7, setup_draw_right_line
+	bgt $t0, $t7, setup_draw_center_line
 	addi $t0, $t0, 504
 	li $t5, 0
 	j draw_left_black_line
@@ -112,7 +112,7 @@ draw_right_line:
 	
 update_right_line_pixel: 
 	addi $t7, $s0, 65532
-	bgt $t0, $t7, setup_draw_center_line
+	bgt $t0, $t7, setup_draw_right_black_line
 	addi $t0, $t0, 504
 	li $t5, 0
 	j draw_right_line
@@ -121,6 +121,39 @@ update_right_line:
 	li $t2, 0
 	addi $t0, $t0, 3072
 	j draw_right_line
+	
+##################################
+setup_draw_right_black_line:
+	addi $t0, $s0, 4228
+	li $t1, 0x000000
+	sw $t1, 0($t0)
+	li $t5, 0
+	li $t6, 8
+	li $t8, 12
+	li $t2, 0
+	j rdraw_right_black_line
+	
+draw_right_black_line:
+	beq $t5, $t6, update_right_black_line_pixel
+	beq, $t2, $t8, update_right_black_line
+	sw $t1, 0($t0)
+	addi $t0, $t0, 4
+	addi $t5, $t5, 4
+	addi $t2, $t2, 1
+	j rdraw_right_black_line
+	
+update_right_black_line_pixel: 
+	addi $t7, $s0, 65532
+	bgt $t0, $t7, rsetup_draw_center_line
+	addi $t0, $t0, 504
+	li $t5, 0
+	j rdraw_right_black_line
+
+update_right_black_line:
+	li $t2, 0
+	addi $t0, $t0, 5120
+	j rdraw_right_black_line
+################################
 	
 setup_draw_center_line:
 	addi $t0, $s0, 256
@@ -316,13 +349,12 @@ update_bluee_line:
 	j draw_bluee_line
 
 set_up_redraw:
-subi $s0, $s0, 512
 j redraw
 	
 	
 redraw: 
 li $v0, 32  
-li $a0, 30
+li $a0, 1000
 syscall
 j redraww
 
@@ -332,7 +364,7 @@ redraww:
     addi $s0, $s0, 512
     lw $t6, bottom_right_index  
     beq $t4, $s0, rupdate_s
-    addi $t4, $s1, 2048
+    addi $t4, $s1, 1536
     add $t0, $s0, $zero
     lw $t6, bottom_right_index  
     j rdraw_road 
@@ -404,7 +436,7 @@ rdraw_left_black_line:
 	j rdraw_left_black_line
 	
 rupdate_left_black_line_pixel: 
-	addi $t7, $s0, 65532
+	addi $t7, $s0, 65000
 	bgt $t0, $t7, rsetup_draw_right_line
 	addi $t0, $t0, 504
 	li $t5, 0
@@ -438,15 +470,48 @@ rdraw_right_line:
 	
 rupdate_right_line_pixel: 
 	addi $t7, $s0, 65532
-	bgt $t0, $t7, rsetup_draw_center_line
+	bgt $t0, $t7, rsetup_draw_right_black_line
 	addi $t0, $t0, 504
 	li $t5, 0
 	j rdraw_right_line
-
+	
 rupdate_right_line:
 	li $t2, 0
-	addi $t0, $t0, 3072
+	addi $t0, $t0, 5120
 	j rdraw_right_line
+	
+##################################
+rsetup_draw_right_black_line:
+	addi $t0, $s0, 4472
+	li $t1, 0x000000
+	sw $t1, 0($t0)
+	li $t5, 0
+	li $t6, 8
+	li $t8, 12
+	li $t2, 0
+	j rdraw_right_black_line
+	
+	
+rdraw_right_black_line:
+	beq $t5, $t6, rupdate_right_black_line_pixel
+	beq, $t2, $t8, rupdate_right_black_line
+	sw $t1, 0($t0)
+	addi $t0, $t0, 4
+	addi $t5, $t5, 4
+	addi $t2, $t2, 1
+	j rdraw_right_black_line
+	
+rupdate_right_black_line_pixel: 
+	addi $t7, $s0, 65000
+	bgt $t0, $t7, rsetup_draw_center_line
+	addi $t0, $t0, 504
+	li $t5, 0
+	j rdraw_right_black_line
+
+rupdate_right_black_line:
+	li $t2, 0
+	addi $t0, $t0, 5120
+	j rdraw_right_black_line
 	
 rsetup_draw_center_line:
 	addi $t0, $s0, 256
@@ -569,7 +634,7 @@ rdraw_redd_line:
 	
 rupdate_redd_line_pixel: 
 	addi $t7, $s0, 65532
-	bgt $t0, $t7, rsetup_draw_blue_line
+	bgt $t0, $t7, redraw
 	addi $t0, $t0, 504
 	li $t5, 0
 	j rdraw_redd_line
@@ -579,67 +644,6 @@ rupdate_redd_line:
 	addi $t0, $t0, 6144
 	j rdraw_redd_line
 	
-rsetup_draw_blue_line:
-	addi $t0, $s0, 6144
-	li $t1, 0x0047AB
-	sw $t1, 0($t0)
-	li $t5, 0
-	li $t6, 8
-	li $t8, 24
-	li $t2, 0
-	j rdraw_blue_line
-	
-rdraw_blue_line:
-	beq $t5, $t6, rupdate_blue_line_pixel
-	beq, $t2, $t8, rupdate_blue_line
-	sw $t1, 0($t0)
-	addi $t0, $t0, 4
-	addi $t5, $t5, 4
-	addi $t2, $t2, 1
-	j rdraw_blue_line
-	
-rupdate_blue_line_pixel: 
-	addi $t7, $s0, 65532
-	bgt $t0, $t7, rsetup_draw_bluee_line
-	addi $t0, $t0, 504
-	li $t5, 0
-	j rdraw_blue_line
-
-rupdate_blue_line:
-	li $t2, 0
-	addi $t0, $t0, 6144
-	j rdraw_blue_line
-
-rsetup_draw_bluee_line:
-	addi $t0, $s0, 6648
-	li $t1, 0x0047AB
-	sw $t1, 0($t0)
-	li $t5, 0
-	li $t6, 8
-	li $t8, 24
-	li $t2, 0
-	j rdraw_bluee_line
-	
-rdraw_bluee_line:
-	beq $t5, $t6, rupdate_bluee_line_pixel
-	beq, $t2, $t8, rupdate_bluee_line
-	sw $t1, 0($t0)
-	addi $t0, $t0, 4
-	addi $t5, $t5, 4
-	addi $t2, $t2, 1
-	j rdraw_bluee_line
-	
-rupdate_bluee_line_pixel: 
-	addi $t7, $s0, 65532
-	bgt $t0, $t7, redraw
-	addi $t0, $t0, 504
-	li $t5, 0
-	j rdraw_bluee_line
-
-rupdate_bluee_line:
-	li $t2, 0
-	addi $t0, $t0, 6144
-	j rdraw_bluee_line
 
 
 	
