@@ -79,7 +79,7 @@ draw_left_black_line:
 	
 update_left_black_line_pixel: 
 	addi $t7, $s0, 65532
-	bgt $t0, $t7, setup_draw_center_line
+	bgt $t0, $t7, setup_draw_right_line
 	addi $t0, $t0, 504
 	li $t5, 0
 	j draw_left_black_line
@@ -219,134 +219,11 @@ draw_right_yellow_line:
 	
 update_right_yellow_line_pixel: 
 	addi $t7, $s0, 65532
-	bgt $t0, $t7, setup_draw_red_line
+	bgt $t0, $t7, set_up_redraw
 	addi $t0, $t0, 508
 	li $t5, 0
 	j draw_right_yellow_line
 	
-setup_draw_red_line:
-	addi $t0, $s0, 0
-	li $t1, 0xFF0000
-	sw $t1, 0($t0)
-	li $t5, 0
-	li $t6, 8
-	li $t8, 24
-	li $t2, 0
-	j draw_red_line
-	
-draw_red_line:
-	beq $t5, $t6, update_red_line_pixel
-	beq, $t2, $t8, update_red_line
-	sw $t1, 0($t0)
-	addi $t0, $t0, 4
-	addi $t5, $t5, 4
-	addi $t2, $t2, 1
-	j draw_red_line
-	
-update_red_line_pixel: 
-	addi $t7, $s0, 65532
-	bgt $t0, $t7, setup_draw_redd_line
-	addi $t0, $t0, 504
-	li $t5, 0
-	j draw_red_line
-
-update_red_line:
-	li $t2, 0
-	addi $t0, $t0, 6144
-	j draw_red_line
-	
-setup_draw_redd_line:
-	addi $t0, $s0, 504
-	li $t1, 0xFF0000
-	sw $t1, 0($t0)
-	li $t5, 0
-	li $t6, 8
-	li $t8, 24
-	li $t2, 0
-	j draw_redd_line
-	
-draw_redd_line:
-	beq $t5, $t6, update_redd_line_pixel
-	beq, $t2, $t8, update_redd_line
-	sw $t1, 0($t0)
-	addi $t0, $t0, 4
-	addi $t5, $t5, 4
-	addi $t2, $t2, 1
-	j draw_redd_line
-	
-update_redd_line_pixel: 
-	addi $t7, $s0, 65532
-	bgt $t0, $t7, setup_draw_blue_line
-	addi $t0, $t0, 504
-	li $t5, 0
-	j draw_redd_line
-
-update_redd_line:
-	li $t2, 0
-	addi $t0, $t0, 6144
-	j draw_redd_line
-	
-setup_draw_blue_line:
-	addi $t0, $s0, 6144
-	li $t1, 0x0047AB
-	sw $t1, 0($t0)
-	li $t5, 0
-	li $t6, 8
-	li $t8, 24
-	li $t2, 0
-	j draw_blue_line
-	
-draw_blue_line:
-	beq $t5, $t6, update_blue_line_pixel
-	beq, $t2, $t8, update_blue_line
-	sw $t1, 0($t0)
-	addi $t0, $t0, 4
-	addi $t5, $t5, 4
-	addi $t2, $t2, 1
-	j draw_blue_line
-	
-update_blue_line_pixel: 
-	addi $t7, $s0, 65532
-	bgt $t0, $t7, setup_draw_bluee_line
-	addi $t0, $t0, 504
-	li $t5, 0
-	j draw_blue_line
-
-update_blue_line:
-	li $t2, 0
-	addi $t0, $t0, 6144
-	j draw_blue_line
-
-setup_draw_bluee_line:
-	addi $t0, $s0, 6648
-	li $t1, 0x0047AB
-	sw $t1, 0($t0)
-	li $t5, 0
-	li $t6, 8
-	li $t8, 24
-	li $t2, 0
-	j draw_bluee_line
-	
-draw_bluee_line:
-	beq $t5, $t6, update_bluee_line_pixel
-	beq, $t2, $t8, update_bluee_line
-	sw $t1, 0($t0)
-	addi $t0, $t0, 4
-	addi $t5, $t5, 4
-	addi $t2, $t2, 1
-	j draw_bluee_line
-	
-update_bluee_line_pixel: 
-	addi $t7, $s0, 65532
-	bgt $t0, $t7, set_up_redraw
-	addi $t0, $t0, 504
-	li $t5, 0
-	j draw_bluee_line
-
-update_bluee_line:
-	li $t2, 0
-	addi $t0, $t0, 6144
-	j draw_bluee_line
 
 set_up_redraw:
 j redraw
@@ -354,7 +231,7 @@ j redraw
 	
 redraw: 
 li $v0, 32  
-li $a0, 1000
+li $a0, 100
 syscall
 j redraww
 
@@ -577,72 +454,11 @@ rdraw_right_yellow_line:
 	
 rupdate_right_yellow_line_pixel: 
 	addi $t7, $s0, 65532
-	bgt $t0, $t7, rsetup_draw_red_line
+	bgt $t0, $t7, redraw
 	addi $t0, $t0, 508
 	li $t5, 0
 	j rdraw_right_yellow_line
 	
-rsetup_draw_red_line:
-	addi $t0, $s0, 0
-	li $t1, 0xFF0000
-	sw $t1, 0($t0)
-	li $t5, 0
-	li $t6, 8
-	li $t8, 24
-	li $t2, 0
-	j rdraw_red_line
-	
-rdraw_red_line:
-	beq $t5, $t6, rupdate_red_line_pixel
-	beq, $t2, $t8, rupdate_red_line
-	sw $t1, 0($t0)
-	addi $t0, $t0, 4
-	addi $t5, $t5, 4
-	addi $t2, $t2, 1
-	j rdraw_red_line
-	
-rupdate_red_line_pixel: 
-	addi $t7, $s0, 65532
-	bgt $t0, $t7, rsetup_draw_redd_line
-	addi $t0, $t0, 504
-	li $t5, 0
-	j rdraw_red_line
-
-rupdate_red_line:
-	li $t2, 0
-	addi $t0, $t0, 6144
-	j rdraw_red_line
-	
-rsetup_draw_redd_line:
-	addi $t0, $s0, 504
-	li $t1, 0xFF0000
-	sw $t1, 0($t0)
-	li $t5, 0
-	li $t6, 8
-	li $t8, 24
-	li $t2, 0
-	j rdraw_redd_line
-	
-rdraw_redd_line:
-	beq $t5, $t6, rupdate_redd_line_pixel
-	beq, $t2, $t8, rupdate_redd_line
-	sw $t1, 0($t0)
-	addi $t0, $t0, 4
-	addi $t5, $t5, 4
-	addi $t2, $t2, 1
-	j rdraw_redd_line
-	
-rupdate_redd_line_pixel: 
-	addi $t7, $s0, 65532
-	bgt $t0, $t7, redraw
-	addi $t0, $t0, 504
-	li $t5, 0
-	j rdraw_redd_line
-
-rupdate_redd_line:
-	li $t2, 0
-	addi $t0, $t0, 6144
-	j rdraw_redd_line
 	
 
 
