@@ -16,6 +16,7 @@ setup_draw:
     la $s3, start_menu
     la $s4, start_menu
     addi $s4, $s4, 8048
+    li $s7, 50 #s7 stores the speed of the car
     li $t6,  16380
     j draw_road  
 	
@@ -204,7 +205,7 @@ j redraw
 	
 redraw: 
 li $v0, 32  
-li $a0, 20
+li $a0, 50
 syscall
 j redraww
 
@@ -222,7 +223,7 @@ redraww:
     j rdraw_road 
     
 rupdate_s:
-	subi $s0, $s0, 2560
+	subi $s0, $s0, 3328
 	add $t0, $s0, $zero
 	lw $t6, bottom_right_index 
 	
