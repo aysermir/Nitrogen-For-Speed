@@ -15,7 +15,7 @@ setup_draw:
     lw $s1, displayAddress
     la $s3, start_menu
     la $s4, start_menu
-    addi $s4, $s4, 8000
+    addi $s4, $s4, 8048
     li $t6,  16380
     j draw_road  
 	
@@ -416,10 +416,16 @@ keypress_happened:
 	j draw_player
 
 respond_to_a:
+	la $t4, start_menu
+	addi $t4, $t4, 7936
+	beq $s4, $t4, draw_player
 	addi $s4, $s4, -4
 	j draw_player
 	
 respond_to_d:
+	la $t4, start_menu
+	addi $t4, $t4, 8168
+	beq $s4, $t4, draw_player
 	addi $s4, $s4, 4
 	j draw_player
 draw_player:
