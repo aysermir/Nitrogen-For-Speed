@@ -9,7 +9,7 @@ bottom_right_index: .word 16384
 .text
 setup_draw: 
     li $t5, 0
-    li $t9, 0x000000
+    li $t9, 0xb3b3b3
     la $t0, start_menu
     la $s0, start_menu
     lw $s1, displayAddress
@@ -86,7 +86,7 @@ update_left_line:
 ##################################
 setup_draw_left_black_line:
 	addi $t0, $s0, 1600
-	li $t1, 0x000000
+	li $t1, 0xb3b3b3
 	sw $t1, 0($t0)
 	li $t5, 0
 	li $t6, 8
@@ -151,7 +151,7 @@ update_right_line:
 ##################################
 setup_draw_right_black_line:
 	addi $t0, $s0, 1724
-	li $t1, 0x000000
+	li $t1, 0xb3b3b3
 	sw $t1, 0($t0)
 	li $t5, 0
 	li $t6, 8
@@ -204,13 +204,13 @@ j redraw
 	
 redraw: 
 li $v0, 32  
-li $a0, 30
+li $a0, 20
 syscall
 j redraww
 
 redraww:	
 	li $t5, 0
-    li $t1, 0x000000 
+    li $t1, 0xb3b3b3
     addi $s0, $s0, 256
     addi $t0, $s0, 256
     lw $t6, bottom_right_index
@@ -293,7 +293,7 @@ rupdate_left_line:
 ##################################
 rsetup_draw_left_black_line:
 	addi $t0, $s0, 1600
-	li $t1, 0x000000
+	li $t1, 0xb3b3b3
 	sw $t1, 0($t0)
 	li $t5, 0
 	li $t6, 8
@@ -358,7 +358,7 @@ rupdate_right_line:
 ##################################
 rsetup_draw_right_black_line:
 	addi $t0, $s0, 1724
-	li $t1, 0x000000
+	li $t1, 0xb3b3b3
 	sw $t1, 0($t0)
 	li $t5, 0
 	li $t6, 8
@@ -424,21 +424,64 @@ respond_to_d:
 	j draw_player
 draw_player:
 	li $t0, 0xff0000
-	sw $t0, 0($s4)
+	li $t1, 0x000000
 	sw $t0, 4($s4)
 	sw $t0, 8($s4)
+	sw $t0, 12($s4)
+	sw $t0, 16($s4)
 	sw $t0, 256($s4)
 	sw $t0, 260($s4)
 	sw $t0, 264($s4)
-	sw $t0, 512($s4)
+	sw $t0, 268($s4)
+	sw $t0, 272($s4)
+	sw $t0, 276($s4)
+	sw $t1, 512($s4)
 	sw $t0, 516($s4)
+	sw $t0, 520($s4)
+	sw $t0, 524($s4)
+	sw $t0, 528($s4)
+	sw $t1, 532($s4)
 	sw $t0, 768($s4)
 	sw $t0, 772($s4)
 	sw $t0, 776($s4)
+	sw $t0, 780($s4)
+	sw $t0, 784($s4)
+	sw $t0, 788($s4)
 	sw $t0, 1024($s4)
 	sw $t0, 1028($s4)
 	sw $t0, 1032($s4)
 	sw $t0, 1036($s4)
+	sw $t0, 1040($s4)
+	sw $t0, 1044($s4)
+	sw $t0, 1280($s4)
+	sw $t0, 1284($s4)
+	sw $t0, 1288($s4)
+	sw $t0, 1292($s4)
+	sw $t0, 1296($s4)
+	sw $t0, 1300($s4)
+	sw $t0, 1536($s4)
+	sw $t0, 1540($s4)
+	sw $t0, 1544($s4)
+	sw $t0, 1548($s4)
+	sw $t0, 1552($s4)
+	sw $t0, 1556($s4)
+	sw $t1, 1792($s4)
+	sw $t0, 1796($s4)
+	sw $t0, 1800($s4)
+	sw $t0, 1804($s4)
+	sw $t0, 1808($s4)
+	sw $t1, 1812($s4)
+	sw $t0, 1796($s4)
+	sw $t0, 2048($s4)
+	sw $t0, 2052($s4)
+	sw $t0, 2056($s4)
+	sw $t0, 2060($s4)
+	sw $t0, 2064($s4)
+	sw $t0, 2068($s4)
+	sw $t0, 2308($s4)
+	sw $t0, 2312($s4)
+	sw $t0, 2316($s4)
+	sw $t0, 2320($s4)
 	j draw_screen
 	
 	 
