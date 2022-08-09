@@ -205,7 +205,7 @@ j redraw
 	
 redraw: 
 li $v0, 32  
-li $a0, 50
+add $a0, $zero, $s7
 syscall
 j redraww
 
@@ -397,10 +397,24 @@ setup_draw_h:
 	
 draw_h:
 	sw $t9, 0($t0)
-	beq $t5, $t6, check_move
+	beq $t5, $t6, setup_draw_progress_bar
 	addi $t0, $t0, 4
 	addi $t5, $t5, 4
 	j draw_h
+	
+setup_draw_progress_bar: 
+    li $t5, 0
+    li $t9, 0x00FF00
+    la $t0, start_menu
+    li $t6,  1000
+    j draw_progress_bar
+	
+draw_progress_bar:
+	sw $t9, 0($t0)
+	beq $t5, $t6, check_move
+	addi $t0, $t0, 4
+	addi $t5, $t5, 4
+	j draw_progress_bar
 	
 check_move:
 	li $t9, 0xffff0000
@@ -410,12 +424,27 @@ check_move:
 	
 keypress_happened:
 	lw $t2, 4($t9) # this assumes $t9 is set to 0xfff0000
-	beq $t2, 0x61, respond_to_a
+	beq $t2, 97, respond_to_a
 	beq $t2, 100, respond_to_d
-	
+	beq $t2, 115, respond_to_s
+	beq $t2, 119, respond_to_w	
 	
 	j draw_player
 
+respond_to_s:
+	addi $t0, $s7, 25
+	beq $t0, 75, draw_player
+	addi $s7, $s7, 25
+	j draw_player
+	
+respond_to_w:
+	subi $t0, $s7, 25
+	beq $t0, -25, draw_player
+	subi $s7, $s7, 25
+	j draw_player
+	
+
+	
 respond_to_a:
 	la $t4, start_menu
 	addi $t4, $t4, 7936
@@ -429,7 +458,10 @@ respond_to_d:
 	beq $s4, $t4, draw_player
 	addi $s4, $s4, 4
 	j draw_player
+	
 draw_player:
+	beq $s7, 25, draw_player_high
+	beq $s7, 0, draw_player_highest
 	li $t0, 0xff0000
 	li $t1, 0x000000
 	li $t2, 0xb3b3b3
@@ -492,7 +524,147 @@ draw_player:
 	sw $t0, 2320($s4)
 	j draw_screen
 	
-	 
+draw_player_high:
+	li $t0, 0xff0000
+	li $t1, 0x000000
+	li $t2, 0xb3b3b3
+	li $t3, 0xffa500
+	sw $t0, 4($s4)
+	sw $t0, 8($s4)
+	sw $t0, 12($s4)
+	sw $t0, 16($s4)
+	sw $t0, 256($s4)
+	sw $t0, 260($s4)
+	sw $t0, 264($s4)
+	sw $t0, 268($s4)
+	sw $t0, 272($s4)
+	sw $t0, 276($s4)
+	sw $t1, 512($s4)
+	sw $t0, 516($s4)
+	sw $t0, 520($s4)
+	sw $t0, 524($s4)
+	sw $t0, 528($s4)
+	sw $t1, 532($s4)
+	sw $t0, 768($s4)
+	sw $t2, 772($s4)
+	sw $t2, 776($s4)
+	sw $t2, 780($s4)
+	sw $t2, 784($s4)
+	sw $t0, 788($s4)
+	sw $t0, 1024($s4)
+	sw $t0, 1028($s4)
+	sw $t0, 1032($s4)
+	sw $t0, 1036($s4)
+	sw $t0, 1040($s4)
+	sw $t0, 1044($s4)
+	sw $t0, 1280($s4)
+	sw $t2, 1284($s4)
+	sw $t2, 1288($s4)
+	sw $t2, 1292($s4)
+	sw $t2, 1296($s4)
+	sw $t0, 1300($s4)
+	sw $t0, 1536($s4)
+	sw $t0, 1540($s4)
+	sw $t0, 1544($s4)
+	sw $t0, 1548($s4)
+	sw $t0, 1552($s4)
+	sw $t0, 1556($s4)
+	sw $t1, 1792($s4)
+	sw $t0, 1796($s4)
+	sw $t0, 1800($s4)
+	sw $t0, 1804($s4)
+	sw $t0, 1808($s4)
+	sw $t1, 1812($s4)
+	sw $t0, 1796($s4)
+	sw $t0, 2048($s4)
+	sw $t0, 2052($s4)
+	sw $t0, 2056($s4)
+	sw $t0, 2060($s4)
+	sw $t0, 2064($s4)
+	sw $t0, 2068($s4)
+	sw $t3, 2304($s4)
+	sw $t0, 2308($s4)
+	sw $t0, 2312($s4)
+	sw $t0, 2316($s4)
+	sw $t0, 2320($s4)
+	sw $t3, 2324($s4)
+	sw $t3, 2560($s4)
+	sw $t3, 2564($s4)
+	sw $t3, 2576($s4)
+	sw $t3, 2580($s4)
+	j draw_screen
+	
+draw_player_highest:
+	li $t0, 0xff0000
+	li $t1, 0x000000
+	li $t2, 0xb3b3b3
+	li $t3, 0x00feff
+	sw $t0, 4($s4)
+	sw $t0, 8($s4)
+	sw $t0, 12($s4)
+	sw $t0, 16($s4)
+	sw $t0, 256($s4)
+	sw $t0, 260($s4)
+	sw $t0, 264($s4)
+	sw $t0, 268($s4)
+	sw $t0, 272($s4)
+	sw $t0, 276($s4)
+	sw $t1, 512($s4)
+	sw $t0, 516($s4)
+	sw $t0, 520($s4)
+	sw $t0, 524($s4)
+	sw $t0, 528($s4)
+	sw $t1, 532($s4)
+	sw $t0, 768($s4)
+	sw $t2, 772($s4)
+	sw $t2, 776($s4)
+	sw $t2, 780($s4)
+	sw $t2, 784($s4)
+	sw $t0, 788($s4)
+	sw $t0, 1024($s4)
+	sw $t0, 1028($s4)
+	sw $t0, 1032($s4)
+	sw $t0, 1036($s4)
+	sw $t0, 1040($s4)
+	sw $t0, 1044($s4)
+	sw $t0, 1280($s4)
+	sw $t2, 1284($s4)
+	sw $t2, 1288($s4)
+	sw $t2, 1292($s4)
+	sw $t2, 1296($s4)
+	sw $t0, 1300($s4)
+	sw $t0, 1536($s4)
+	sw $t0, 1540($s4)
+	sw $t0, 1544($s4)
+	sw $t0, 1548($s4)
+	sw $t0, 1552($s4)
+	sw $t0, 1556($s4)
+	sw $t1, 1792($s4)
+	sw $t0, 1796($s4)
+	sw $t0, 1800($s4)
+	sw $t0, 1804($s4)
+	sw $t0, 1808($s4)
+	sw $t1, 1812($s4)
+	sw $t0, 1796($s4)
+	sw $t0, 2048($s4)
+	sw $t0, 2052($s4)
+	sw $t0, 2056($s4)
+	sw $t0, 2060($s4)
+	sw $t0, 2064($s4)
+	sw $t0, 2068($s4)
+	sw $t3, 2304($s4)
+	sw $t0, 2308($s4)
+	sw $t0, 2312($s4)
+	sw $t0, 2316($s4)
+	sw $t0, 2320($s4)
+	sw $t3, 2324($s4)
+	sw $t3, 2560($s4)
+	sw $t3, 2564($s4)
+	sw $t3, 2576($s4)
+	sw $t3, 2580($s4)
+	sw $t3, 2816($s4)
+	sw $t3, 2836($s4)
+	j draw_screen
 	
 end:
 li $v0, 10 # terminate the program
