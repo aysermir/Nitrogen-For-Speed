@@ -17,6 +17,7 @@ setup_draw:
     la $s4, start_menu
     addi $s4, $s4, 8048
     li $s7, 50 #s7 stores the speed of the car
+    li $s5, 0 #stores progress of the car 
     li $t6,  16380
     j draw_road  
 	
@@ -210,6 +211,7 @@ syscall
 j redraww
 
 redraww:	
+	addi $s5, $s5, 1
 	li $t5, 0
     li $t1, 0xb3b3b3
     addi $s0, $s0, 256
@@ -404,17 +406,232 @@ draw_h:
 	
 setup_draw_progress_bar: 
     li $t5, 0
-    li $t9, 0x00FF00
+    li $t9, 0x4FE34F
     la $t0, start_menu
     li $t6,  1000
     j draw_progress_bar
 	
 draw_progress_bar:
-	sw $t9, 0($t0)
-	beq $t5, $t6, check_move
+	sw $t9, 260($t0)
+	sw $t9, 264($t0)
+	sw $t9, 268($t0)
+	sw $t9, 516($t0)
+	sw $t9, 524($t0)
+	sw $t9, 772($t0)
+	sw $t9, 780($t0)
+	sw $t9, 1028($t0)
+	sw $t9, 1032($t0)
+	sw $t9, 1036($t0)
+	sw $t9, 1284($t0)
+	sw $t9, 1540($t0)
+	li $t9, 0x000000
+	li $t8, 0xffffff
+	sw $t9, 276($t0)
+	sw $t8, 280($t0)
+	sw $t9, 284($t0)
+	sw $t8, 288($t0)
+	sw $t9, 292($t0)
+	sw $t8, 296($t0)
+	sw $t9, 300($t0)
+	sw $t8, 304($t0)
+	sw $t9, 308($t0)
+	sw $t8, 312($t0)
+	sw $t9, 316($t0)
+	sw $t8, 320($t0)
+	sw $t9, 324($t0)
+	sw $t8, 328($t0)
+	
+	sw $t9, 332($t0)
+	sw $t8, 336($t0)
+	
+	
+	sw $t8, 532($t0)
+	sw $t9, 788($t0)
+	sw $t8, 1044($t0)
+	sw $t9, 1300($t0)
+	sw $t9, 340($t0)
+	sw $t8, 344($t0)
+	sw $t9, 348($t0)
+	sw $t8, 352($t0)
+	sw $t9, 356($t0)
+	sw $t8, 360($t0)
+	sw $t9, 364($t0)
+	sw $t8, 368($t0)
+	sw $t9, 372($t0)
+	
+	sw $t9, 628($t0)
+	sw $t8, 884($t0)
+	sw $t9, 1140($t0)
+	sw $t8, 1396($t0)
+	sw $t9, 1556($t0)
+	sw $t8, 1560($t0)
+	sw $t9, 1564($t0)
+	sw $t8, 1568($t0)
+	sw $t9, 1572($t0)
+	sw $t8, 1576($t0)
+	sw $t9, 1580($t0)
+	sw $t8, 1584($t0)
+	sw $t9, 1588($t0)
+	sw $t8, 1592($t0)
+	sw $t9, 1596($t0)
+	sw $t8, 1600($t0)
+	sw $t9, 1604($t0)
+	sw $t8, 1608($t0)
+	sw $t9, 1612($t0)
+	sw $t8, 1616($t0)
+	sw $t9, 1620($t0)
+	sw $t8, 1624($t0)
+	sw $t9, 1628($t0)
+	sw $t8, 1632($t0)
+	sw $t9, 1636($t0)
+	sw $t8, 1640($t0)
+	sw $t9, 1644($t0)
+	sw $t8, 1648($t0)
+	sw $t9, 1652($t0)
+	addi $t1, $t0, 0
+	addi $t2, $t0, 0
+	li $t4, 460
+	bgt $s5, $t4, draw_progress_23
+	li $t4, 440
+	bgt $s5, $t4, draw_progress_22
+	li $t4, 420
+	bgt $s5, $t4, draw_progress_21
+	li $t4, 400
+	bgt $s5, $t4, draw_progress_20
+	li $t4, 380
+	bgt $s5, $t4, draw_progress_19
+	li $t4, 360
+	bgt $s5, $t4, draw_progress_18
+	li $t4, 340
+	bgt $s5, $t4, draw_progress_17
+	li $t4, 320
+	bgt $s5, $t4, draw_progress_16
+	li $t4, 300
+	bgt $s5, $t4, draw_progress_15
+	li $t4, 280
+	bgt $s5, $t4, draw_progress_14
+	li $t4, 260
+	bgt $s5, $t4, draw_progress_13
+	
+	li $t4, 240
+	bgt $s5, $t4, draw_progress_12
+	li $t4, 220
+	bgt $s5, $t4, draw_progress_11
+	li $t4, 200
+	bgt $s5, $t4, draw_progress_10
+	li $t4, 180
+	bgt $s5, $t4, draw_progress_9
+	li $t4, 160
+	bgt $s5, $t4, draw_progress_8
+	li $t4, 140
+	bgt $s5, $t4, draw_progress_7
+	li $t4, 120
+	bgt $s5, $t4, draw_progress_6
+	li $t4, 100
+	bgt $s5, $t4, draw_progress_5
+	li $t4, 80
+	bgt $s5, $t4, draw_progress_4
+	li $t4, 60
+	bgt $s5, $t4, draw_progress_3
+	li $t4, 40
+	bgt $s5, $t4, draw_progress_2
+	li $t4, 20
+	bgt $s5, $t4, draw_progress_1
+	
+	
+	j check_move
+	#beq $t5, $t6, check_move
+	#addi $t0, $t0, 4
+	#addi $t5, $t5, 4
+	#j draw_progress_bar
+
+draw_progress_1:
+	addi $t1, $t0, 4
+	j draw_progress
+draw_progress_2:	
+	addi $t1, $t0, 8
+	j draw_progress
+draw_progress_3:
+	addi $t1, $t0, 12
+	j draw_progress
+draw_progress_4:	
+	addi $t1, $t0, 16
+	j draw_progress
+	
+draw_progress_5:
+	addi $t1, $t0, 20
+	j draw_progress
+draw_progress_6:	
+	addi $t1, $t0, 24
+	j draw_progress
+draw_progress_7:
+	addi $t1, $t0, 28
+	j draw_progress
+draw_progress_8:	
+	addi $t1, $t0, 32
+	j draw_progress
+	
+draw_progress_9:
+	addi $t1, $t0, 36
+	j draw_progress
+draw_progress_10:	
+	addi $t1, $t0, 40
+	j draw_progress
+draw_progress_11:
+	addi $t1, $t0, 44
+	j draw_progress
+draw_progress_12:	
+	addi $t1, $t0, 48
+	j draw_progress
+	
+draw_progress_13:
+	addi $t1, $t0, 52
+	j draw_progress
+draw_progress_14:	
+	addi $t1, $t0, 56
+	j draw_progress
+draw_progress_15:
+	addi $t1, $t0, 60
+	j draw_progress
+draw_progress_16:	
+	addi $t1, $t0, 64
+	j draw_progress	
+
+draw_progress_17:
+	addi $t1, $t0, 68
+	j draw_progress
+draw_progress_18:	
+	addi $t1, $t0, 72
+	j draw_progress
+draw_progress_19:
+	addi $t1, $t0, 76
+	j draw_progress
+draw_progress_20:	
+	addi $t1, $t0, 80
+	j draw_progress	
+	
+draw_progress_21:
+	addi $t1, $t0, 84
+	j draw_progress
+draw_progress_22:	
+	addi $t1, $t0, 88
+	j draw_progress	
+draw_progress_23:	
+	addi $t1, $t0, 92
+	j draw_progress	
+draw_progress:
+	beq $t1, $t0, check_move
+	li $t9, 0x4FE34F
+	sw $t9, 536($t0)
+	sw $t9, 792($t0)
+	sw $t9, 1048($t0)
+	sw $t9, 1304($t0)
+	#sw $t9, 792($t0)
+	#sw $t9, 1048($t0)
+	#sw $t9, 1304($t0)
 	addi $t0, $t0, 4
-	addi $t5, $t5, 4
-	j draw_progress_bar
+	j draw_progress
+	
 	
 check_move:
 	li $t9, 0xffff0000
