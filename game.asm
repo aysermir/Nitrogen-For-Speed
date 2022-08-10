@@ -203,12 +203,22 @@ draw:
 ######################################################
 #######################################################
 setup_redraw:
+	li $t5, 21000
+	bgt $s2, $t5, reset_s2
 	li $t5, 14500
 	bgt $s3, $t5, reset_s3
 	addi $s3, $s3, 256
 	addi $s2, $s2, 256
 	j redraww
 
+reset_s2:
+	
+	li $t5, 14500
+	bgt $s3, $t5, reset_s3
+	addi $s3, $s3, 256
+	addi $s2, $s2, 256
+	j redraww
+	
 reset_s3:
 li $v0, 42
 li $a0, 0
@@ -1035,7 +1045,7 @@ draw_enemy_1:
 	la $t4, start_menu
 	addi $t4, $t4, 2200
 	add $t4, $t4,$s3
-	addi $t4, $t4, 256
+	addi $t4, $t4, -2560
 	li $t0, 0xff00ff
 	li $t1, 0x000000
 	li $t2, 0xb3b3b3
