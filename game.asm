@@ -281,7 +281,7 @@ setup_redraw:
 reset_s3:
 li $v0, 42
 li $a0, 0
-li $a1, 11
+li $a1, 14
 syscall
 add $s1, $zero, $a0
 li $s3, 0
@@ -481,6 +481,9 @@ draw_enemy:
 	beq $s1, 7, draw_set_8
 	beq $s1, 8, draw_set_9
 	beq $s1, 9, draw_set_10
+	beq $s1, 10, draw_set_11
+	beq $s1, 11, draw_set_12
+	beq $s1, 12, draw_set_13
 	
 draw_set_1:
 	jal draw_enemy_1
@@ -490,6 +493,7 @@ draw_set_1:
 draw_set_2:
 	jal draw_enemy_2
 	jal draw_enemy_3
+	jal draw_pickup_3
 	j check_move
 	
 draw_set_3:
@@ -514,6 +518,7 @@ draw_set_6:
 	
 draw_set_7:
 	jal draw_enemy_1
+	jal draw_pickup_4
 	j check_move
 
 draw_set_8:
@@ -523,10 +528,26 @@ draw_set_8:
 	
 draw_set_9:
 	jal draw_enemy_3
+	jal draw_pickup_1
 	j check_move
 
 draw_set_10:
 	jal draw_enemy_4
+	j check_move
+
+draw_set_11:
+	jal draw_enemy_1
+	jal draw_pickup_1
+	j check_move
+	
+draw_set_12:
+	jal draw_enemy_3
+	jal draw_pickup_1
+	j check_move
+	
+draw_set_13:
+	jal draw_enemy_3
+	jal draw_pickup_2
 	j check_move
 	
 
@@ -602,7 +623,7 @@ draw_enemy_2:
 	la $t4, start_menu
 	addi $t4, $t4, 2400
 	add $t4, $t4,$s3
-	addi $t4, $t4, -3584
+	addi $t4, $t4, -2560
 	li $t0, 0x7FFFD4
 	li $t1, 0x000000
 	li $t2, 0xb3b3b3
@@ -737,8 +758,6 @@ draw_enemy_3:
 	
 draw_enemy_4:
 	la $t4, start_menu
-
-	
 	addi $t4, $t4, 2584
 	add $t4, $t4,$s3
 	addi $t4, $t4, -3584
@@ -805,8 +824,157 @@ draw_enemy_4:
 	jr $ra
 #################
 
-
+draw_pickup_1:
+	la $t4, start_menu
+	addi $t4, $t4, 2400
+	add $t4, $t4,$s3
+	addi $t4, $t4, -3584
+	li $t0, 0xff0000
+	sw $t0, 256($t4)
+	sw $t0, 260($t4)
+	sw $t0, 264($t4)
+	sw $t0, 268($t4)
+	sw $t0, 272($t4)
+	sw $t0, 276($t4)
+	sw $t0, 512($t4)
+	sw $t0, 516($t4)
+	sw $t0, 520($t4)
+	sw $t0, 524($t4)
+	sw $t0, 528($t4)
+	sw $t0, 532($t4)
+	sw $t0, 768($t4)
+	sw $t0, 772($t4)
+	sw $t0, 776($t4)
+	sw $t0, 780($t4)
+	sw $t0, 784($t4)
+	sw $t0, 788($t4)
+	sw $t0, 1024($t4)
+	sw $t0, 1028($t4)
+	sw $t0, 1032($t4)
+	sw $t0, 1036($t4)
+	sw $t0, 1040($t4)
+	sw $t0, 1044($t4)
+	sw $t0, 1280($t4)
+	sw $t0, 1284($t4)
+	sw $t0, 1288($t4)
+	sw $t0, 1292($t4)
+	sw $t0, 1296($t4)
+	sw $t0, 1300($t4)
+	jr $ra
 	
+draw_pickup_2:
+	la $t4, start_menu
+	addi $t4, $t4, 2584
+	add $t4, $t4,$s3
+	addi $t4, $t4, -2560
+	li $t0, 0xff0000
+	sw $t0, 256($t4)
+	sw $t0, 260($t4)
+	sw $t0, 264($t4)
+	sw $t0, 268($t4)
+	sw $t0, 272($t4)
+	sw $t0, 276($t4)
+	sw $t0, 512($t4)
+	sw $t0, 516($t4)
+	sw $t0, 520($t4)
+	sw $t0, 524($t4)
+	sw $t0, 528($t4)
+	sw $t0, 532($t4)
+	sw $t0, 768($t4)
+	sw $t0, 772($t4)
+	sw $t0, 776($t4)
+	sw $t0, 780($t4)
+	sw $t0, 784($t4)
+	sw $t0, 788($t4)
+	sw $t0, 1024($t4)
+	sw $t0, 1028($t4)
+	sw $t0, 1032($t4)
+	sw $t0, 1036($t4)
+	sw $t0, 1040($t4)
+	sw $t0, 1044($t4)
+	sw $t0, 1280($t4)
+	sw $t0, 1284($t4)
+	sw $t0, 1288($t4)
+	sw $t0, 1292($t4)
+	sw $t0, 1296($t4)
+	sw $t0, 1300($t4)
+	jr $ra
+	
+draw_pickup_3:
+	la $t4, start_menu
+	addi $t4, $t4, 2200
+	add $t4, $t4,$s3
+	addi $t4, $t4, -2560
+	li $t0, 0xff0000
+	sw $t0, 256($t4)
+	sw $t0, 260($t4)
+	sw $t0, 264($t4)
+	sw $t0, 268($t4)
+	sw $t0, 272($t4)
+	sw $t0, 276($t4)
+	sw $t0, 512($t4)
+	sw $t0, 516($t4)
+	sw $t0, 520($t4)
+	sw $t0, 524($t4)
+	sw $t0, 528($t4)
+	sw $t0, 532($t4)
+	sw $t0, 768($t4)
+	sw $t0, 772($t4)
+	sw $t0, 776($t4)
+	sw $t0, 780($t4)
+	sw $t0, 784($t4)
+	sw $t0, 788($t4)
+	sw $t0, 1024($t4)
+	sw $t0, 1028($t4)
+	sw $t0, 1032($t4)
+	sw $t0, 1036($t4)
+	sw $t0, 1040($t4)
+	sw $t0, 1044($t4)
+	sw $t0, 1280($t4)
+	sw $t0, 1284($t4)
+	sw $t0, 1288($t4)
+	sw $t0, 1292($t4)
+	sw $t0, 1296($t4)
+	sw $t0, 1300($t4)
+	jr $ra
+	
+draw_pickup_4:
+	la $t4, start_menu
+	addi $t4, $t4, 2000
+	add $t4, $t4,$s3
+	addi $t4, $t4, -2560
+	li $t0, 0xff0000
+	sw $t0, 256($t4)
+	sw $t0, 260($t4)
+	sw $t0, 264($t4)
+	sw $t0, 268($t4)
+	sw $t0, 272($t4)
+	sw $t0, 276($t4)
+	sw $t0, 512($t4)
+	sw $t0, 516($t4)
+	sw $t0, 520($t4)
+	sw $t0, 524($t4)
+	sw $t0, 528($t4)
+	sw $t0, 532($t4)
+	sw $t0, 768($t4)
+	sw $t0, 772($t4)
+	sw $t0, 776($t4)
+	sw $t0, 780($t4)
+	sw $t0, 784($t4)
+	sw $t0, 788($t4)
+	sw $t0, 1024($t4)
+	sw $t0, 1028($t4)
+	sw $t0, 1032($t4)
+	sw $t0, 1036($t4)
+	sw $t0, 1040($t4)
+	sw $t0, 1044($t4)
+	sw $t0, 1280($t4)
+	sw $t0, 1284($t4)
+	sw $t0, 1288($t4)
+	sw $t0, 1292($t4)
+	sw $t0, 1296($t4)
+	sw $t0, 1300($t4)
+	jr $ra
 	
 	
 	
@@ -866,6 +1034,13 @@ reduce_health:
 	li $s5, 0
 	j draw_player
 	
+increase_health:
+	subi $t4, $s6, 4
+	bgt $zero, $t4, draw_player 
+	subi $s6, $s6, 4
+	j draw_player
+	
+	
 setup_draw_end:
 	addi $t1, $gp, 0
 	li $t2, 4096
@@ -900,11 +1075,13 @@ check_collision:
 	li $t3, 0xFF10F0
 	li $t4, 0xFFFF00
 	li $t5, 0x7FFFD4
+	li $t6, 0xff0000
 	lw $t0, -4($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
 	lw $t0, 252($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
