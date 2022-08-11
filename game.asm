@@ -203,26 +203,17 @@ draw:
 ######################################################
 #######################################################
 setup_redraw:
-	li $t5, 21000
-	bgt $s2, $t5, reset_s2
-	li $t5, 14500
+	li $t5, 16100
 	bgt $s3, $t5, reset_s3
 	addi $s3, $s3, 256
 	addi $s2, $s2, 256
 	j redraww
 
-reset_s2:
-	
-	li $t5, 14500
-	bgt $s3, $t5, reset_s3
-	addi $s3, $s3, 256
-	addi $s2, $s2, 256
-	j redraww
 	
 reset_s3:
 li $v0, 42
 li $a0, 0
-li $a1, 7
+li $a1, 11
 syscall
 add $s1, $zero, $a0
 li $s3, 0
@@ -315,7 +306,7 @@ rupdate_left_line:
 ##################################
 rsetup_draw_left_black_line:
 	addi $t0, $s0, 1600
-	li $t1, 0xb3b3b3
+	li $t1, 0xb3b3b3   
 	sw $t1, 0($t0)
 	li $t5, 0
 	li $t6, 8
@@ -399,7 +390,7 @@ rdraw_right_black_line:
 	
 rupdate_right_black_line_pixel: 
 	addi $t7, $s0, 16380
-	bgt $t0, $t7, setup_draw_h
+	bgt $t0, $t7, check_move
 	addi $t0, $t0, 248
 	li $t5, 0
 	j rdraw_right_black_line
@@ -409,6 +400,680 @@ rupdate_right_black_line:
 	addi $t0, $t0, 1536
 	j rdraw_right_black_line
 	
+
+	
+	
+	
+	
+check_move:
+	li $t9, 0xffff0000
+	lw $t8, 0($t9)
+	beq $t8, 1, keypress_happened
+	j check_collision
+	
+keypress_happened:
+	lw $t2, 4($t9) # this assumes $t9 is set to 0xfff0000
+	beq $t2, 97, respond_to_a
+	beq $t2, 100, respond_to_d
+	beq $t2, 115, respond_to_s
+	beq $t2, 119, respond_to_w	
+	
+	j check_collision
+
+respond_to_s:
+	addi $t0, $s7, 25
+	beq $t0, 75, draw_player
+	addi $s7, $s7, 25
+	j check_collision
+	
+respond_to_w:
+	subi $t0, $s7, 25
+	beq $t0, -25, draw_player
+	subi $s7, $s7, 25
+	j check_collision
+	
+
+	
+respond_to_a:
+	la $t4, start_menu
+	addi $t4, $t4, 7936
+	beq $s4, $t4, reduce_health
+	addi $s4, $s4, -4
+	j check_collision
+	
+respond_to_d:
+	la $t4, start_menu
+	addi $t4, $t4, 8168
+	beq $s4, $t4, reduce_health
+	addi $s4, $s4, 4
+	j check_collision
+
+reduce_health:
+la $s4, start_menu
+    addi $s4, $s4, 8048
+	addi $s6, $s6, 8
+	j draw_player
+	
+check_collision:
+	li $t2, 0xffa500
+	lw $t0, -4($s4)
+	li $v0, 1
+    	move $a0, $t0
+    	syscall
+	beq $t0, $t2, reduce_health
+	lw $t0, 252($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 508($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 764($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 1020($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 1276($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 1532($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 1788($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 2044($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 2300($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 2556($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 2560($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 2564($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 2568($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 2572($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 2576($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 2580($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 2584($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, -260($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, -256($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, -252($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, -248($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, -244($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, -240($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, -236($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, -232($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 24($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 280($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 536($s4)	
+	beq $t0, $t2, reduce_health
+	lw $t0, 792($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 1048($s4)	
+	beq $t0, $t2, reduce_health
+	lw $t0, 1304($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 1560($s4)	
+	beq $t0, $t2, reduce_health
+	lw $t0, 1816($s4)
+	beq $t0, $t2, reduce_health
+	lw $t0, 2072($s4)	
+	beq $t0, $t2, reduce_health
+	lw $t0, 2328($s4)
+	beq $t0, $t2, reduce_health
+
+
+	
+draw_player:
+	beq $s7, 25, draw_player_high
+	beq $s7, 0, draw_player_highest
+	li $t0, 0xff0000
+	li $t1, 0x000000
+	li $t2, 0xb3b3b3
+	sw $t0, 4($s4)
+	sw $t0, 8($s4)
+	sw $t0, 12($s4)
+	sw $t0, 16($s4)
+	sw $t0, 256($s4)
+	sw $t0, 260($s4)
+	sw $t0, 264($s4)
+	sw $t0, 268($s4)
+	sw $t0, 272($s4)
+	sw $t0, 276($s4)
+	sw $t1, 512($s4)
+	sw $t0, 516($s4)
+	sw $t0, 520($s4)
+	sw $t0, 524($s4)
+	sw $t0, 528($s4)
+	sw $t1, 532($s4)
+	sw $t0, 768($s4)
+	sw $t2, 772($s4)
+	sw $t2, 776($s4)
+	sw $t2, 780($s4)
+	sw $t2, 784($s4)
+	sw $t0, 788($s4)
+	sw $t0, 1024($s4)
+	sw $t0, 1028($s4)
+	sw $t0, 1032($s4)
+	sw $t0, 1036($s4)
+	sw $t0, 1040($s4)
+	sw $t0, 1044($s4)
+	sw $t0, 1280($s4)
+	sw $t2, 1284($s4)
+	sw $t2, 1288($s4)
+	sw $t2, 1292($s4)
+	sw $t2, 1296($s4)
+	sw $t0, 1300($s4)
+	sw $t0, 1536($s4)
+	sw $t0, 1540($s4)
+	sw $t0, 1544($s4)
+	sw $t0, 1548($s4)
+	sw $t0, 1552($s4)
+	sw $t0, 1556($s4)
+	sw $t1, 1792($s4)
+	sw $t0, 1796($s4)
+	sw $t0, 1800($s4)
+	sw $t0, 1804($s4)
+	sw $t0, 1808($s4)
+	sw $t1, 1812($s4)
+	sw $t0, 1796($s4)
+	sw $t0, 2048($s4)
+	sw $t0, 2052($s4)
+	sw $t0, 2056($s4)
+	sw $t0, 2060($s4)
+	sw $t0, 2064($s4)
+	sw $t0, 2068($s4)
+	sw $t0, 2308($s4)
+	sw $t0, 2312($s4)
+	sw $t0, 2316($s4)
+	sw $t0, 2320($s4)
+	j draw_enemy
+	
+draw_player_high:
+	li $t0, 0xff0000
+	li $t1, 0x000000
+	li $t2, 0xb3b3b3
+	li $t3, 0xffa500
+	sw $t0, 4($s4)
+	sw $t0, 8($s4)
+	sw $t0, 12($s4)
+	sw $t0, 16($s4)
+	sw $t0, 256($s4)
+	sw $t0, 260($s4)
+	sw $t0, 264($s4)
+	sw $t0, 268($s4)
+	sw $t0, 272($s4)
+	sw $t0, 276($s4)
+	sw $t1, 512($s4)
+	sw $t0, 516($s4)
+	sw $t0, 520($s4)
+	sw $t0, 524($s4)
+	sw $t0, 528($s4)
+	sw $t1, 532($s4)
+	sw $t0, 768($s4)
+	sw $t2, 772($s4)
+	sw $t2, 776($s4)
+	sw $t2, 780($s4)
+	sw $t2, 784($s4)
+	sw $t0, 788($s4)
+	sw $t0, 1024($s4)
+	sw $t0, 1028($s4)
+	sw $t0, 1032($s4)
+	sw $t0, 1036($s4)
+	sw $t0, 1040($s4)
+	sw $t0, 1044($s4)
+	sw $t0, 1280($s4)
+	sw $t2, 1284($s4)
+	sw $t2, 1288($s4)
+	sw $t2, 1292($s4)
+	sw $t2, 1296($s4)
+	sw $t0, 1300($s4)
+	sw $t0, 1536($s4)
+	sw $t0, 1540($s4)
+	sw $t0, 1544($s4)
+	sw $t0, 1548($s4)
+	sw $t0, 1552($s4)
+	sw $t0, 1556($s4)
+	sw $t1, 1792($s4)
+	sw $t0, 1796($s4)
+	sw $t0, 1800($s4)
+	sw $t0, 1804($s4)
+	sw $t0, 1808($s4)
+	sw $t1, 1812($s4)
+	sw $t0, 1796($s4)
+	sw $t0, 2048($s4)
+	sw $t0, 2052($s4)
+	sw $t0, 2056($s4)
+	sw $t0, 2060($s4)
+	sw $t0, 2064($s4)
+	sw $t0, 2068($s4)
+	sw $t3, 2304($s4)
+	sw $t0, 2308($s4)
+	sw $t0, 2312($s4)
+	sw $t0, 2316($s4)
+	sw $t0, 2320($s4)
+	sw $t3, 2324($s4)
+	sw $t3, 2560($s4)
+	sw $t3, 2564($s4)
+	sw $t3, 2576($s4)
+	sw $t3, 2580($s4)
+	j draw_enemy
+	
+draw_player_highest:
+	li $t0, 0xff0000
+	li $t1, 0x000000
+	li $t2, 0xb3b3b3
+	li $t3, 0x00feff
+	sw $t0, 4($s4)
+	sw $t0, 8($s4)
+	sw $t0, 12($s4)
+	sw $t0, 16($s4)
+	sw $t0, 256($s4)
+	sw $t0, 260($s4)
+	sw $t0, 264($s4)
+	sw $t0, 268($s4)
+	sw $t0, 272($s4)
+	sw $t0, 276($s4)
+	sw $t1, 512($s4)
+	sw $t0, 516($s4)
+	sw $t0, 520($s4)
+	sw $t0, 524($s4)
+	sw $t0, 528($s4)
+	sw $t1, 532($s4)
+	sw $t0, 768($s4)
+	sw $t2, 772($s4)
+	sw $t2, 776($s4)
+	sw $t2, 780($s4)
+	sw $t2, 784($s4)
+	sw $t0, 788($s4)
+	sw $t0, 1024($s4)
+	sw $t0, 1028($s4)
+	sw $t0, 1032($s4)
+	sw $t0, 1036($s4)
+	sw $t0, 1040($s4)
+	sw $t0, 1044($s4)
+	sw $t0, 1280($s4)
+	sw $t2, 1284($s4)
+	sw $t2, 1288($s4)
+	sw $t2, 1292($s4)
+	sw $t2, 1296($s4)
+	sw $t0, 1300($s4)
+	sw $t0, 1536($s4)
+	sw $t0, 1540($s4)
+	sw $t0, 1544($s4)
+	sw $t0, 1548($s4)
+	sw $t0, 1552($s4)
+	sw $t0, 1556($s4)
+	sw $t1, 1792($s4)
+	sw $t0, 1796($s4)
+	sw $t0, 1800($s4)
+	sw $t0, 1804($s4)
+	sw $t0, 1808($s4)
+	sw $t1, 1812($s4)
+	sw $t0, 1796($s4)
+	sw $t0, 2048($s4)
+	sw $t0, 2052($s4)
+	sw $t0, 2056($s4)
+	sw $t0, 2060($s4)
+	sw $t0, 2064($s4)
+	sw $t0, 2068($s4)
+	sw $t3, 2304($s4)
+	sw $t0, 2308($s4)
+	sw $t0, 2312($s4)
+	sw $t0, 2316($s4)
+	sw $t0, 2320($s4)
+	sw $t3, 2324($s4)
+	sw $t3, 2560($s4)
+	sw $t3, 2564($s4)
+	sw $t3, 2576($s4)
+	sw $t3, 2580($s4)
+	sw $t3, 2816($s4)
+	sw $t3, 2836($s4)
+	j draw_enemy
+	
+
+draw_enemy:
+	beq $s1, 0, draw_set_1
+	beq $s1, 1, draw_set_2
+	beq $s1, 2, draw_set_3
+	beq $s1, 3, draw_set_4
+	beq $s1, 4, draw_set_5
+	beq $s1, 5, draw_set_6
+	beq $s1, 6, draw_set_7
+	beq $s1, 7, draw_set_8
+	beq $s1, 8, draw_set_9
+	beq $s1, 9, draw_set_10
+	
+draw_set_1:
+	jal draw_enemy_1
+	jal draw_enemy_2
+	j setup_draw_h
+	
+draw_set_2:
+	jal draw_enemy_2
+	jal draw_enemy_3
+	j setup_draw_h
+	
+draw_set_3:
+	jal draw_enemy_1
+	jal draw_enemy_4
+	j setup_draw_h
+	
+draw_set_4:
+	jal draw_enemy_3
+	jal draw_enemy_4
+	j setup_draw_h
+	
+draw_set_5:
+	jal draw_enemy_2
+	jal draw_enemy_4
+	j setup_draw_h
+
+draw_set_6:
+	jal draw_enemy_1
+	jal draw_enemy_3
+	j setup_draw_h
+	
+draw_set_7:
+	jal draw_enemy_1
+	j setup_draw_h
+
+draw_set_8:
+	jal draw_enemy_2
+	j setup_draw_h
+	
+	
+draw_set_9:
+	jal draw_enemy_3
+	j setup_draw_h
+
+draw_set_10:
+	jal draw_enemy_4
+	j setup_draw_h
+	
+
+draw_enemy_1:
+	la $t4, start_menu
+	addi $t4, $t4, 2200
+	add $t4, $t4,$s3
+	addi $t4, $t4, -2560
+	li $t0, 0xFFA500
+	li $t1, 0x000000
+	li $t2, 0xb3b3b3
+	sw $t0, 4($t4)
+	sw $t0, 8($t4)
+	sw $t0, 12($t4)
+	sw $t0, 16($t4)
+	sw $t0, 256($t4)
+	sw $t0, 260($t4)
+	sw $t0, 264($t4)
+	sw $t0, 268($t4)
+	sw $t0, 272($t4)
+	sw $t0, 276($t4)
+	sw $t1, 512($t4)
+	sw $t0, 516($t4)
+	sw $t0, 520($t4)
+	sw $t0, 524($t4)
+	sw $t0, 528($t4)
+	sw $t1, 532($t4)
+	sw $t0, 768($t4)
+	sw $t2, 772($t4)
+	sw $t2, 776($t4)
+	sw $t2, 780($t4)
+	sw $t2, 784($t4)
+	sw $t0, 788($t4)
+	sw $t0, 1024($t4)
+	sw $t0, 1028($t4)
+	sw $t0, 1032($t4)
+	sw $t0, 1036($t4)
+	sw $t0, 1040($t4)
+	sw $t0, 1044($t4)
+	sw $t0, 1280($t4)
+	sw $t2, 1284($t4)
+	sw $t2, 1288($t4)
+	sw $t2, 1292($t4)
+	sw $t2, 1296($t4)
+	sw $t0, 1300($t4)
+	sw $t0, 1536($t4)
+	sw $t0, 1540($t4)
+	sw $t0, 1544($t4)
+	sw $t0, 1548($t4)
+	sw $t0, 1552($t4)
+	sw $t0, 1556($t4)
+	sw $t1, 1792($t4)
+	sw $t0, 1796($t4)
+	sw $t0, 1800($t4)
+	sw $t0, 1804($t4)
+	sw $t0, 1808($t4)
+	sw $t1, 1812($t4)
+	sw $t0, 1796($t4)
+	sw $t0, 2048($t4)
+	sw $t0, 2052($t4)
+	sw $t0, 2056($t4)
+	sw $t0, 2060($t4)
+	sw $t0, 2064($t4)
+	sw $t0, 2068($t4)
+	sw $t0, 2308($t4)
+	sw $t0, 2312($t4)
+	sw $t0, 2316($t4)
+	sw $t0, 2320($t4)
+	jr $ra
+
+	
+draw_enemy_2:
+	la $t4, start_menu
+	addi $t4, $t4, 2400
+	add $t4, $t4,$s3
+	addi $t4, $t4, -1280
+	li $t0, 0xFFA500
+	li $t1, 0x000000
+	li $t2, 0xb3b3b3
+	sw $t0, 4($t4)
+	sw $t0, 8($t4)
+	sw $t0, 12($t4)
+	sw $t0, 16($t4)
+	sw $t0, 256($t4)
+	sw $t0, 260($t4)
+	sw $t0, 264($t4)
+	sw $t0, 268($t4)
+	sw $t0, 272($t4)
+	sw $t0, 276($t4)
+	sw $t1, 512($t4)
+	sw $t0, 516($t4)
+	sw $t0, 520($t4)
+	sw $t0, 524($t4)
+	sw $t0, 528($t4)
+	sw $t1, 532($t4)
+	sw $t0, 768($t4)
+	sw $t2, 772($t4)
+	sw $t2, 776($t4)
+	sw $t2, 780($t4)
+	sw $t2, 784($t4)
+	sw $t0, 788($t4)
+	sw $t0, 1024($t4)
+	sw $t0, 1028($t4)
+	sw $t0, 1032($t4)
+	sw $t0, 1036($t4)
+	sw $t0, 1040($t4)
+	sw $t0, 1044($t4)
+	sw $t0, 1280($t4)
+	sw $t2, 1284($t4)
+	sw $t2, 1288($t4)
+	sw $t2, 1292($t4)
+	sw $t2, 1296($t4)
+	sw $t0, 1300($t4)
+	sw $t0, 1536($t4)
+	sw $t0, 1540($t4)
+	sw $t0, 1544($t4)
+	sw $t0, 1548($t4)
+	sw $t0, 1552($t4)
+	sw $t0, 1556($t4)
+	sw $t1, 1792($t4)
+	sw $t0, 1796($t4)
+	sw $t0, 1800($t4)
+	sw $t0, 1804($t4)
+	sw $t0, 1808($t4)
+	sw $t1, 1812($t4)
+	sw $t0, 1796($t4)
+	sw $t0, 2048($t4)
+	sw $t0, 2052($t4)
+	sw $t0, 2056($t4)
+	sw $t0, 2060($t4)
+	sw $t0, 2064($t4)
+	sw $t0, 2068($t4)
+	sw $t0, 2308($t4)
+	sw $t0, 2312($t4)
+	sw $t0, 2316($t4)
+	sw $t0, 2320($t4)
+	jr $ra
+
+
+
+draw_enemy_3:
+	la $t4, start_menu
+	addi $t4, $t4, 2000
+	add $t4, $t4,$s3
+	addi $t4, $t4, -3840
+	li $t0, 0xFFA500
+	li $t1, 0x000000
+	li $t2, 0xb3b3b3
+	sw $t0, 4($t4)
+	sw $t0, 8($t4)
+	sw $t0, 12($t4)
+	sw $t0, 16($t4)
+	sw $t0, 256($t4)
+	sw $t0, 260($t4)
+	sw $t0, 264($t4)
+	sw $t0, 268($t4)
+	sw $t0, 272($t4)
+	sw $t0, 276($t4)
+	sw $t1, 512($t4)
+	sw $t0, 516($t4)
+	sw $t0, 520($t4)
+	sw $t0, 524($t4)
+	sw $t0, 528($t4)
+	sw $t1, 532($t4)
+	sw $t0, 768($t4)
+	sw $t2, 772($t4)
+	sw $t2, 776($t4)
+	sw $t2, 780($t4)
+	sw $t2, 784($t4)
+	sw $t0, 788($t4)
+	sw $t0, 1024($t4)
+	sw $t0, 1028($t4)
+	sw $t0, 1032($t4)
+	sw $t0, 1036($t4)
+	sw $t0, 1040($t4)
+	sw $t0, 1044($t4)
+	sw $t0, 1280($t4)
+	sw $t2, 1284($t4)
+	sw $t2, 1288($t4)
+	sw $t2, 1292($t4)
+	sw $t2, 1296($t4)
+	sw $t0, 1300($t4)
+	sw $t0, 1536($t4)
+	sw $t0, 1540($t4)
+	sw $t0, 1544($t4)
+	sw $t0, 1548($t4)
+	sw $t0, 1552($t4)
+	sw $t0, 1556($t4)
+	sw $t1, 1792($t4)
+	sw $t0, 1796($t4)
+	sw $t0, 1800($t4)
+	sw $t0, 1804($t4)
+	sw $t0, 1808($t4)
+	sw $t1, 1812($t4)
+	sw $t0, 1796($t4)
+	sw $t0, 2048($t4)
+	sw $t0, 2052($t4)
+	sw $t0, 2056($t4)
+	sw $t0, 2060($t4)
+	sw $t0, 2064($t4)
+	sw $t0, 2068($t4)
+	sw $t0, 2308($t4)
+	sw $t0, 2312($t4)
+	sw $t0, 2316($t4)
+	sw $t0, 2320($t4)
+	jr $ra
+
+	
+draw_enemy_4:
+	la $t4, start_menu
+	addi $t4, $t4, 2600
+	add $t4, $t4,$s3
+	addi $t4, $t4, -1280
+	li $t0, 0xFFA500
+	li $t1, 0x000000
+	li $t2, 0xb3b3b3
+	sw $t0, 4($t4)
+	sw $t0, 8($t4)
+	sw $t0, 12($t4)
+	sw $t0, 16($t4)
+	sw $t0, 256($t4)
+	sw $t0, 260($t4)
+	sw $t0, 264($t4)
+	sw $t0, 268($t4)
+	sw $t0, 272($t4)
+	sw $t0, 276($t4)
+	sw $t1, 512($t4)
+	sw $t0, 516($t4)
+	sw $t0, 520($t4)
+	sw $t0, 524($t4)
+	sw $t0, 528($t4)
+	sw $t1, 532($t4)
+	sw $t0, 768($t4)
+	sw $t2, 772($t4)
+	sw $t2, 776($t4)
+	sw $t2, 780($t4)
+	sw $t2, 784($t4)
+	sw $t0, 788($t4)
+	sw $t0, 1024($t4)
+	sw $t0, 1028($t4)
+	sw $t0, 1032($t4)
+	sw $t0, 1036($t4)
+	sw $t0, 1040($t4)
+	sw $t0, 1044($t4)
+	sw $t0, 1280($t4)
+	sw $t2, 1284($t4)
+	sw $t2, 1288($t4)
+	sw $t2, 1292($t4)
+	sw $t2, 1296($t4)
+	sw $t0, 1300($t4)
+	sw $t0, 1536($t4)
+	sw $t0, 1540($t4)
+	sw $t0, 1544($t4)
+	sw $t0, 1548($t4)
+	sw $t0, 1552($t4)
+	sw $t0, 1556($t4)
+	sw $t1, 1792($t4)
+	sw $t0, 1796($t4)
+	sw $t0, 1800($t4)
+	sw $t0, 1804($t4)
+	sw $t0, 1808($t4)
+	sw $t1, 1812($t4)
+	sw $t0, 1796($t4)
+	sw $t0, 2048($t4)
+	sw $t0, 2052($t4)
+	sw $t0, 2056($t4)
+	sw $t0, 2060($t4)
+	sw $t0, 2064($t4)
+	sw $t0, 2068($t4)
+	sw $t0, 2308($t4)
+	sw $t0, 2312($t4)
+	sw $t0, 2316($t4)
+	sw $t0, 2320($t4)
+	jr $ra
+
 setup_draw_h: 
     li $t5, 0
     li $t9, 0x0000ff
@@ -416,13 +1081,13 @@ setup_draw_h:
     li $t6,  2044
     j draw_h
 	
-draw_h:
+draw_h:  
 	sw $t9, 0($t0)
 	beq $t5, $t6, setup_draw_progress_bar
 	addi $t0, $t0, 4
 	addi $t5, $t5, 4
 	j draw_h
-	
+
 setup_draw_progress_bar: 
     li $t5, 0
     li $t9, 0x4FE34F
@@ -736,7 +1401,7 @@ draw_health_h:
 	li $t1, 0xFF00FF
 	
 draw_health:
-	beq $t6, $t5, check_move
+	beq $t6, $t5, redraw
 	sw $t1, 668($t3)
 	sw $t1, 924($t3)
 	sw $t1, 1180($t3)
@@ -744,576 +1409,6 @@ draw_health:
 	addi $t3, $t3, 4
 	addi $t6, $t6, 4
 	j draw_health
-	
-	
-	
-check_move:
-	li $t9, 0xffff0000
-	lw $t8, 0($t9)
-	beq $t8, 1, keypress_happened
-	j draw_player
-	
-keypress_happened:
-	lw $t2, 4($t9) # this assumes $t9 is set to 0xfff0000
-	beq $t2, 97, respond_to_a
-	beq $t2, 100, respond_to_d
-	beq $t2, 115, respond_to_s
-	beq $t2, 119, respond_to_w	
-	
-	j draw_player
-
-respond_to_s:
-	addi $t0, $s7, 25
-	beq $t0, 75, draw_player
-	addi $s7, $s7, 25
-	j draw_player
-	
-respond_to_w:
-	subi $t0, $s7, 25
-	beq $t0, -25, draw_player
-	subi $s7, $s7, 25
-	j draw_player
-	
-
-	
-respond_to_a:
-	la $t4, start_menu
-	addi $t4, $t4, 7936
-	beq $s4, $t4, reduce_health
-	addi $s4, $s4, -4
-	j draw_player
-	
-respond_to_d:
-	la $t4, start_menu
-	addi $t4, $t4, 8168
-	beq $s4, $t4, reduce_health
-	addi $s4, $s4, 4
-	j draw_player
-
-reduce_health:
-	addi $s6, $s6, 8
-	
-
-draw_player:
-	beq $s7, 25, draw_player_high
-	beq $s7, 0, draw_player_highest
-	li $t0, 0xff0000
-	li $t1, 0x000000
-	li $t2, 0xb3b3b3
-	sw $t0, 4($s4)
-	sw $t0, 8($s4)
-	sw $t0, 12($s4)
-	sw $t0, 16($s4)
-	sw $t0, 256($s4)
-	sw $t0, 260($s4)
-	sw $t0, 264($s4)
-	sw $t0, 268($s4)
-	sw $t0, 272($s4)
-	sw $t0, 276($s4)
-	sw $t1, 512($s4)
-	sw $t0, 516($s4)
-	sw $t0, 520($s4)
-	sw $t0, 524($s4)
-	sw $t0, 528($s4)
-	sw $t1, 532($s4)
-	sw $t0, 768($s4)
-	sw $t2, 772($s4)
-	sw $t2, 776($s4)
-	sw $t2, 780($s4)
-	sw $t2, 784($s4)
-	sw $t0, 788($s4)
-	sw $t0, 1024($s4)
-	sw $t0, 1028($s4)
-	sw $t0, 1032($s4)
-	sw $t0, 1036($s4)
-	sw $t0, 1040($s4)
-	sw $t0, 1044($s4)
-	sw $t0, 1280($s4)
-	sw $t2, 1284($s4)
-	sw $t2, 1288($s4)
-	sw $t2, 1292($s4)
-	sw $t2, 1296($s4)
-	sw $t0, 1300($s4)
-	sw $t0, 1536($s4)
-	sw $t0, 1540($s4)
-	sw $t0, 1544($s4)
-	sw $t0, 1548($s4)
-	sw $t0, 1552($s4)
-	sw $t0, 1556($s4)
-	sw $t1, 1792($s4)
-	sw $t0, 1796($s4)
-	sw $t0, 1800($s4)
-	sw $t0, 1804($s4)
-	sw $t0, 1808($s4)
-	sw $t1, 1812($s4)
-	sw $t0, 1796($s4)
-	sw $t0, 2048($s4)
-	sw $t0, 2052($s4)
-	sw $t0, 2056($s4)
-	sw $t0, 2060($s4)
-	sw $t0, 2064($s4)
-	sw $t0, 2068($s4)
-	sw $t0, 2308($s4)
-	sw $t0, 2312($s4)
-	sw $t0, 2316($s4)
-	sw $t0, 2320($s4)
-	j draw_enemy
-	
-draw_player_high:
-	li $t0, 0xff0000
-	li $t1, 0x000000
-	li $t2, 0xb3b3b3
-	li $t3, 0xffa500
-	sw $t0, 4($s4)
-	sw $t0, 8($s4)
-	sw $t0, 12($s4)
-	sw $t0, 16($s4)
-	sw $t0, 256($s4)
-	sw $t0, 260($s4)
-	sw $t0, 264($s4)
-	sw $t0, 268($s4)
-	sw $t0, 272($s4)
-	sw $t0, 276($s4)
-	sw $t1, 512($s4)
-	sw $t0, 516($s4)
-	sw $t0, 520($s4)
-	sw $t0, 524($s4)
-	sw $t0, 528($s4)
-	sw $t1, 532($s4)
-	sw $t0, 768($s4)
-	sw $t2, 772($s4)
-	sw $t2, 776($s4)
-	sw $t2, 780($s4)
-	sw $t2, 784($s4)
-	sw $t0, 788($s4)
-	sw $t0, 1024($s4)
-	sw $t0, 1028($s4)
-	sw $t0, 1032($s4)
-	sw $t0, 1036($s4)
-	sw $t0, 1040($s4)
-	sw $t0, 1044($s4)
-	sw $t0, 1280($s4)
-	sw $t2, 1284($s4)
-	sw $t2, 1288($s4)
-	sw $t2, 1292($s4)
-	sw $t2, 1296($s4)
-	sw $t0, 1300($s4)
-	sw $t0, 1536($s4)
-	sw $t0, 1540($s4)
-	sw $t0, 1544($s4)
-	sw $t0, 1548($s4)
-	sw $t0, 1552($s4)
-	sw $t0, 1556($s4)
-	sw $t1, 1792($s4)
-	sw $t0, 1796($s4)
-	sw $t0, 1800($s4)
-	sw $t0, 1804($s4)
-	sw $t0, 1808($s4)
-	sw $t1, 1812($s4)
-	sw $t0, 1796($s4)
-	sw $t0, 2048($s4)
-	sw $t0, 2052($s4)
-	sw $t0, 2056($s4)
-	sw $t0, 2060($s4)
-	sw $t0, 2064($s4)
-	sw $t0, 2068($s4)
-	sw $t3, 2304($s4)
-	sw $t0, 2308($s4)
-	sw $t0, 2312($s4)
-	sw $t0, 2316($s4)
-	sw $t0, 2320($s4)
-	sw $t3, 2324($s4)
-	sw $t3, 2560($s4)
-	sw $t3, 2564($s4)
-	sw $t3, 2576($s4)
-	sw $t3, 2580($s4)
-	j draw_enemy
-	
-draw_player_highest:
-	li $t0, 0xff0000
-	li $t1, 0x000000
-	li $t2, 0xb3b3b3
-	li $t3, 0x00feff
-	sw $t0, 4($s4)
-	sw $t0, 8($s4)
-	sw $t0, 12($s4)
-	sw $t0, 16($s4)
-	sw $t0, 256($s4)
-	sw $t0, 260($s4)
-	sw $t0, 264($s4)
-	sw $t0, 268($s4)
-	sw $t0, 272($s4)
-	sw $t0, 276($s4)
-	sw $t1, 512($s4)
-	sw $t0, 516($s4)
-	sw $t0, 520($s4)
-	sw $t0, 524($s4)
-	sw $t0, 528($s4)
-	sw $t1, 532($s4)
-	sw $t0, 768($s4)
-	sw $t2, 772($s4)
-	sw $t2, 776($s4)
-	sw $t2, 780($s4)
-	sw $t2, 784($s4)
-	sw $t0, 788($s4)
-	sw $t0, 1024($s4)
-	sw $t0, 1028($s4)
-	sw $t0, 1032($s4)
-	sw $t0, 1036($s4)
-	sw $t0, 1040($s4)
-	sw $t0, 1044($s4)
-	sw $t0, 1280($s4)
-	sw $t2, 1284($s4)
-	sw $t2, 1288($s4)
-	sw $t2, 1292($s4)
-	sw $t2, 1296($s4)
-	sw $t0, 1300($s4)
-	sw $t0, 1536($s4)
-	sw $t0, 1540($s4)
-	sw $t0, 1544($s4)
-	sw $t0, 1548($s4)
-	sw $t0, 1552($s4)
-	sw $t0, 1556($s4)
-	sw $t1, 1792($s4)
-	sw $t0, 1796($s4)
-	sw $t0, 1800($s4)
-	sw $t0, 1804($s4)
-	sw $t0, 1808($s4)
-	sw $t1, 1812($s4)
-	sw $t0, 1796($s4)
-	sw $t0, 2048($s4)
-	sw $t0, 2052($s4)
-	sw $t0, 2056($s4)
-	sw $t0, 2060($s4)
-	sw $t0, 2064($s4)
-	sw $t0, 2068($s4)
-	sw $t3, 2304($s4)
-	sw $t0, 2308($s4)
-	sw $t0, 2312($s4)
-	sw $t0, 2316($s4)
-	sw $t0, 2320($s4)
-	sw $t3, 2324($s4)
-	sw $t3, 2560($s4)
-	sw $t3, 2564($s4)
-	sw $t3, 2576($s4)
-	sw $t3, 2580($s4)
-	sw $t3, 2816($s4)
-	sw $t3, 2836($s4)
-	j draw_enemy
-	
-
-draw_enemy:
-	beq $s1, 0, draw_set_1
-	beq $s1, 1, draw_set_2
-	beq $s1, 2, draw_set_3
-	beq $s1, 3, draw_set_4
-	beq $s1, 4, draw_set_5
-	beq $s1, 5, draw_set_6
-	
-draw_set_1:
-	jal draw_enemy_1
-	jal draw_enemy_2
-	j redraw
-	
-draw_set_2:
-	jal draw_enemy_2
-	jal draw_enemy_3
-	j redraw
-	
-draw_set_3:
-	jal draw_enemy_1
-	jal draw_enemy_4
-	j redraw
-	
-draw_set_4:
-	jal draw_enemy_3
-	jal draw_enemy_4
-	j redraw
-	
-draw_set_5:
-	jal draw_enemy_2
-	jal draw_enemy_4
-	j redraw
-
-draw_set_6:
-	jal draw_enemy_1
-	jal draw_enemy_3
-	j redraw
-	
-
-draw_enemy_1:
-	la $t4, start_menu
-	addi $t4, $t4, 2200
-	add $t4, $t4,$s3
-	addi $t4, $t4, -2560
-	li $t0, 0xff00ff
-	li $t1, 0x000000
-	li $t2, 0xb3b3b3
-	sw $t0, 4($t4)
-	sw $t0, 8($t4)
-	sw $t0, 12($t4)
-	sw $t0, 16($t4)
-	sw $t0, 256($t4)
-	sw $t0, 260($t4)
-	sw $t0, 264($t4)
-	sw $t0, 268($t4)
-	sw $t0, 272($t4)
-	sw $t0, 276($t4)
-	sw $t1, 512($t4)
-	sw $t0, 516($t4)
-	sw $t0, 520($t4)
-	sw $t0, 524($t4)
-	sw $t0, 528($t4)
-	sw $t1, 532($t4)
-	sw $t0, 768($t4)
-	sw $t2, 772($t4)
-	sw $t2, 776($t4)
-	sw $t2, 780($t4)
-	sw $t2, 784($t4)
-	sw $t0, 788($t4)
-	sw $t0, 1024($t4)
-	sw $t0, 1028($t4)
-	sw $t0, 1032($t4)
-	sw $t0, 1036($t4)
-	sw $t0, 1040($t4)
-	sw $t0, 1044($t4)
-	sw $t0, 1280($t4)
-	sw $t2, 1284($t4)
-	sw $t2, 1288($t4)
-	sw $t2, 1292($t4)
-	sw $t2, 1296($t4)
-	sw $t0, 1300($t4)
-	sw $t0, 1536($t4)
-	sw $t0, 1540($t4)
-	sw $t0, 1544($t4)
-	sw $t0, 1548($t4)
-	sw $t0, 1552($t4)
-	sw $t0, 1556($t4)
-	sw $t1, 1792($t4)
-	sw $t0, 1796($t4)
-	sw $t0, 1800($t4)
-	sw $t0, 1804($t4)
-	sw $t0, 1808($t4)
-	sw $t1, 1812($t4)
-	sw $t0, 1796($t4)
-	sw $t0, 2048($t4)
-	sw $t0, 2052($t4)
-	sw $t0, 2056($t4)
-	sw $t0, 2060($t4)
-	sw $t0, 2064($t4)
-	sw $t0, 2068($t4)
-	sw $t0, 2308($t4)
-	sw $t0, 2312($t4)
-	sw $t0, 2316($t4)
-	sw $t0, 2320($t4)
-	jr $ra
-
-	
-draw_enemy_2:
-	la $t4, start_menu
-	addi $t4, $t4, 2400
-	add $t4, $t4,$s3
-	addi $t4, $t4, 256
-	li $t0, 0xff0000
-	li $t1, 0x000000
-	li $t2, 0xb3b3b3
-	sw $t0, 4($t4)
-	sw $t0, 8($t4)
-	sw $t0, 12($t4)
-	sw $t0, 16($t4)
-	sw $t0, 256($t4)
-	sw $t0, 260($t4)
-	sw $t0, 264($t4)
-	sw $t0, 268($t4)
-	sw $t0, 272($t4)
-	sw $t0, 276($t4)
-	sw $t1, 512($t4)
-	sw $t0, 516($t4)
-	sw $t0, 520($t4)
-	sw $t0, 524($t4)
-	sw $t0, 528($t4)
-	sw $t1, 532($t4)
-	sw $t0, 768($t4)
-	sw $t2, 772($t4)
-	sw $t2, 776($t4)
-	sw $t2, 780($t4)
-	sw $t2, 784($t4)
-	sw $t0, 788($t4)
-	sw $t0, 1024($t4)
-	sw $t0, 1028($t4)
-	sw $t0, 1032($t4)
-	sw $t0, 1036($t4)
-	sw $t0, 1040($t4)
-	sw $t0, 1044($t4)
-	sw $t0, 1280($t4)
-	sw $t2, 1284($t4)
-	sw $t2, 1288($t4)
-	sw $t2, 1292($t4)
-	sw $t2, 1296($t4)
-	sw $t0, 1300($t4)
-	sw $t0, 1536($t4)
-	sw $t0, 1540($t4)
-	sw $t0, 1544($t4)
-	sw $t0, 1548($t4)
-	sw $t0, 1552($t4)
-	sw $t0, 1556($t4)
-	sw $t1, 1792($t4)
-	sw $t0, 1796($t4)
-	sw $t0, 1800($t4)
-	sw $t0, 1804($t4)
-	sw $t0, 1808($t4)
-	sw $t1, 1812($t4)
-	sw $t0, 1796($t4)
-	sw $t0, 2048($t4)
-	sw $t0, 2052($t4)
-	sw $t0, 2056($t4)
-	sw $t0, 2060($t4)
-	sw $t0, 2064($t4)
-	sw $t0, 2068($t4)
-	sw $t0, 2308($t4)
-	sw $t0, 2312($t4)
-	sw $t0, 2316($t4)
-	sw $t0, 2320($t4)
-	jr $ra
-
-
-
-draw_enemy_3:
-	la $t4, start_menu
-	addi $t4, $t4, 2000
-	add $t4, $t4,$s3
-	addi $t4, $t4, 256
-	li $t0, 0xff00ff
-	li $t1, 0x000000
-	li $t2, 0xb3b3b3
-	sw $t0, 4($t4)
-	sw $t0, 8($t4)
-	sw $t0, 12($t4)
-	sw $t0, 16($t4)
-	sw $t0, 256($t4)
-	sw $t0, 260($t4)
-	sw $t0, 264($t4)
-	sw $t0, 268($t4)
-	sw $t0, 272($t4)
-	sw $t0, 276($t4)
-	sw $t1, 512($t4)
-	sw $t0, 516($t4)
-	sw $t0, 520($t4)
-	sw $t0, 524($t4)
-	sw $t0, 528($t4)
-	sw $t1, 532($t4)
-	sw $t0, 768($t4)
-	sw $t2, 772($t4)
-	sw $t2, 776($t4)
-	sw $t2, 780($t4)
-	sw $t2, 784($t4)
-	sw $t0, 788($t4)
-	sw $t0, 1024($t4)
-	sw $t0, 1028($t4)
-	sw $t0, 1032($t4)
-	sw $t0, 1036($t4)
-	sw $t0, 1040($t4)
-	sw $t0, 1044($t4)
-	sw $t0, 1280($t4)
-	sw $t2, 1284($t4)
-	sw $t2, 1288($t4)
-	sw $t2, 1292($t4)
-	sw $t2, 1296($t4)
-	sw $t0, 1300($t4)
-	sw $t0, 1536($t4)
-	sw $t0, 1540($t4)
-	sw $t0, 1544($t4)
-	sw $t0, 1548($t4)
-	sw $t0, 1552($t4)
-	sw $t0, 1556($t4)
-	sw $t1, 1792($t4)
-	sw $t0, 1796($t4)
-	sw $t0, 1800($t4)
-	sw $t0, 1804($t4)
-	sw $t0, 1808($t4)
-	sw $t1, 1812($t4)
-	sw $t0, 1796($t4)
-	sw $t0, 2048($t4)
-	sw $t0, 2052($t4)
-	sw $t0, 2056($t4)
-	sw $t0, 2060($t4)
-	sw $t0, 2064($t4)
-	sw $t0, 2068($t4)
-	sw $t0, 2308($t4)
-	sw $t0, 2312($t4)
-	sw $t0, 2316($t4)
-	sw $t0, 2320($t4)
-	jr $ra
-
-	
-draw_enemy_4:
-	la $t4, start_menu
-	addi $t4, $t4, 2600
-	add $t4, $t4,$s3
-	addi $t4, $t4, 256
-	li $t0, 0xff0000
-	li $t1, 0x000000
-	li $t2, 0xb3b3b3
-	sw $t0, 4($t4)
-	sw $t0, 8($t4)
-	sw $t0, 12($t4)
-	sw $t0, 16($t4)
-	sw $t0, 256($t4)
-	sw $t0, 260($t4)
-	sw $t0, 264($t4)
-	sw $t0, 268($t4)
-	sw $t0, 272($t4)
-	sw $t0, 276($t4)
-	sw $t1, 512($t4)
-	sw $t0, 516($t4)
-	sw $t0, 520($t4)
-	sw $t0, 524($t4)
-	sw $t0, 528($t4)
-	sw $t1, 532($t4)
-	sw $t0, 768($t4)
-	sw $t2, 772($t4)
-	sw $t2, 776($t4)
-	sw $t2, 780($t4)
-	sw $t2, 784($t4)
-	sw $t0, 788($t4)
-	sw $t0, 1024($t4)
-	sw $t0, 1028($t4)
-	sw $t0, 1032($t4)
-	sw $t0, 1036($t4)
-	sw $t0, 1040($t4)
-	sw $t0, 1044($t4)
-	sw $t0, 1280($t4)
-	sw $t2, 1284($t4)
-	sw $t2, 1288($t4)
-	sw $t2, 1292($t4)
-	sw $t2, 1296($t4)
-	sw $t0, 1300($t4)
-	sw $t0, 1536($t4)
-	sw $t0, 1540($t4)
-	sw $t0, 1544($t4)
-	sw $t0, 1548($t4)
-	sw $t0, 1552($t4)
-	sw $t0, 1556($t4)
-	sw $t1, 1792($t4)
-	sw $t0, 1796($t4)
-	sw $t0, 1800($t4)
-	sw $t0, 1804($t4)
-	sw $t0, 1808($t4)
-	sw $t1, 1812($t4)
-	sw $t0, 1796($t4)
-	sw $t0, 2048($t4)
-	sw $t0, 2052($t4)
-	sw $t0, 2056($t4)
-	sw $t0, 2060($t4)
-	sw $t0, 2064($t4)
-	sw $t0, 2068($t4)
-	sw $t0, 2308($t4)
-	sw $t0, 2312($t4)
-	sw $t0, 2316($t4)
-	sw $t0, 2320($t4)
-	jr $ra
-
-
 
 redraw: 
 li $v0, 32  
