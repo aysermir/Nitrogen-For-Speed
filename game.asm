@@ -455,7 +455,7 @@ rdraw_right_black_line:
 	addi $t5, $t5, 4
 	addi $t2, $t2, 1
 	j rdraw_right_black_line
-	
+	    
 rupdate_right_black_line_pixel: 
 	addi $t7, $s0, 16380
 	bgt $t0, $t7, draw_enemy
@@ -1190,6 +1190,7 @@ respond_to_d:
 	j check_collision
 
 reduce_health:
+	beq $s6, 92, draw_player
 	la $s4, start_menu
     	addi $s4, $s4, 8060
     	beq $s6, 88, setup_draw_end
@@ -1234,201 +1235,276 @@ respond_to_r:
 	j setup_draw		
 						
 check_collision:
+	beq $s6, 92, draw_player
 	li $t2, 0x0000FF
 	li $t3, 0xFF10F0
 	li $t4, 0xFFFF00
 	li $t5, 0x7FFFD4
 	li $t6, 0xff0000
+	li $t7, 0xb3a500
 	lw $t0, -4($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
 	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 252($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 508($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 764($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 1020($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 1276($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 1532($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 1788($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 2044($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 2300($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 2556($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 2560($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 2564($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 2568($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 2572($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 2576($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 2580($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 2584($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, -260($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, -256($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, -252($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, -248($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, -244($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, -240($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, -236($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, -232($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 24($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 280($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 536($s4)	
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 792($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 1048($s4)	
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 1304($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 1560($s4)	
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 1816($s4)
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 2072($s4)	   
 	beq $t0, $t2, reduce_health
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	lw $t0, 2328($s4)
-	beq $t0, $t2, reduce_health
+	beq $t0, $t2, reduce_health    
 	beq $t0, $t3, reduce_health
 	beq $t0, $t4, reduce_health
 	beq $t0, $t5, reduce_health
-
-
+	beq $t0, $t6, increase_health 
+	beq $t0, $t7, turn_invincible
 	
+	j draw_player
+turn_invincible:
+	li $s6, 92	
 draw_player:
 	beq $s7, 25, draw_player_high
 	beq $s7, 0, draw_player_highest
 	li $t0, 0xff0000
 	li $t1, 0x000000
 	li $t2, 0xb3b3b3
+	beq $s6, 92, draw_player_g
 	sw $t0, 4($s4)
 	sw $t0, 8($s4)
 	sw $t0, 12($s4)
@@ -1483,7 +1559,7 @@ draw_player:
 	sw $t0, 2064($s4)
 	sw $t0, 2068($s4)
 	sw $t0, 2308($s4)
-	sw $t0, 2312($s4)
+	sw $t0, 2312($s4)  
 	sw $t0, 2316($s4)
 	sw $t0, 2320($s4)
 	j setup_draw_h
@@ -1493,6 +1569,7 @@ draw_player_high:
 	li $t1, 0x000000
 	li $t2, 0xb3b3b3
 	li $t3, 0xffa500
+	beq $s6, 92, draw_player_high_g
 	sw $t0, 4($s4)
 	sw $t0, 8($s4)
 	sw $t0, 12($s4)
@@ -1563,6 +1640,7 @@ draw_player_highest:
 	li $t1, 0x000000
 	li $t2, 0xb3b3b3
 	li $t3, 0x00feff
+	beq $s6, 92, draw_player_highest_g
 	sw $t0, 4($s4)
 	sw $t0, 8($s4)
 	sw $t0, 12($s4)
@@ -1629,6 +1707,220 @@ draw_player_highest:
 	sw $t3, 2816($s4)
 	sw $t3, 2836($s4)
 	j setup_draw_h
+
+
+
+
+
+draw_player_g:
+	li $t0, 0x00feff
+	li $t1, 0x000000
+	li $t2, 0xb3b3b3
+	sw $t0, 4($s4)
+	sw $t0, 8($s4)
+	sw $t0, 12($s4)
+	sw $t0, 16($s4)
+	sw $t0, 256($s4)
+	sw $t0, 260($s4)
+	sw $t0, 264($s4)
+	sw $t0, 268($s4)
+	sw $t0, 272($s4)
+	sw $t0, 276($s4)
+	sw $t1, 512($s4)
+	sw $t0, 516($s4)
+	sw $t0, 520($s4)
+	sw $t0, 524($s4)
+	sw $t0, 528($s4)
+	sw $t1, 532($s4)
+	sw $t0, 768($s4)
+	sw $t2, 772($s4)
+	sw $t2, 776($s4)
+	sw $t2, 780($s4)
+	sw $t2, 784($s4)
+	sw $t0, 788($s4)
+	sw $t0, 1024($s4)
+	sw $t0, 1028($s4)
+	sw $t0, 1032($s4)
+	sw $t0, 1036($s4)
+	sw $t0, 1040($s4)
+	sw $t0, 1044($s4)
+	sw $t0, 1280($s4)
+	sw $t2, 1284($s4)
+	sw $t2, 1288($s4)
+	sw $t2, 1292($s4)
+	sw $t2, 1296($s4)
+	sw $t0, 1300($s4)
+	sw $t0, 1536($s4)
+	sw $t0, 1540($s4)
+	sw $t0, 1544($s4)
+	sw $t0, 1548($s4)
+	sw $t0, 1552($s4)
+	sw $t0, 1556($s4)
+	sw $t1, 1792($s4)
+	sw $t0, 1796($s4)
+	sw $t0, 1800($s4)
+	sw $t0, 1804($s4)
+	sw $t0, 1808($s4)
+	sw $t1, 1812($s4)
+	sw $t0, 1796($s4)
+	sw $t0, 2048($s4)
+	sw $t0, 2052($s4)
+	sw $t0, 2056($s4)
+	sw $t0, 2060($s4)
+	sw $t0, 2064($s4)
+	sw $t0, 2068($s4)
+	sw $t0, 2308($s4)
+	sw $t0, 2312($s4)  
+	sw $t0, 2316($s4)
+	sw $t0, 2320($s4)
+	j setup_draw_h
+	
+draw_player_high_g:
+	li $t0, 0x00feff
+	li $t1, 0x000000
+	li $t2, 0xb3b3b3
+	li $t3, 0xffa500
+	sw $t0, 4($s4)
+	sw $t0, 8($s4)
+	sw $t0, 12($s4)
+	sw $t0, 16($s4)
+	sw $t0, 256($s4)
+	sw $t0, 260($s4)
+	sw $t0, 264($s4)
+	sw $t0, 268($s4)
+	sw $t0, 272($s4)
+	sw $t0, 276($s4)
+	sw $t1, 512($s4)
+	sw $t0, 516($s4)
+	sw $t0, 520($s4)
+	sw $t0, 524($s4)
+	sw $t0, 528($s4)
+	sw $t1, 532($s4)
+	sw $t0, 768($s4)
+	sw $t2, 772($s4)
+	sw $t2, 776($s4)
+	sw $t2, 780($s4)
+	sw $t2, 784($s4)
+	sw $t0, 788($s4)
+	sw $t0, 1024($s4)
+	sw $t0, 1028($s4)
+	sw $t0, 1032($s4)
+	sw $t0, 1036($s4)
+	sw $t0, 1040($s4)
+	sw $t0, 1044($s4)
+	sw $t0, 1280($s4)
+	sw $t2, 1284($s4)
+	sw $t2, 1288($s4)
+	sw $t2, 1292($s4)
+	sw $t2, 1296($s4)
+	sw $t0, 1300($s4)
+	sw $t0, 1536($s4)
+	sw $t0, 1540($s4)
+	sw $t0, 1544($s4)
+	sw $t0, 1548($s4)
+	sw $t0, 1552($s4)
+	sw $t0, 1556($s4)
+	sw $t1, 1792($s4)
+	sw $t0, 1796($s4)
+	sw $t0, 1800($s4)
+	sw $t0, 1804($s4)
+	sw $t0, 1808($s4)
+	sw $t1, 1812($s4)
+	sw $t0, 1796($s4)
+	sw $t0, 2048($s4)
+	sw $t0, 2052($s4)
+	sw $t0, 2056($s4)
+	sw $t0, 2060($s4)
+	sw $t0, 2064($s4)
+	sw $t0, 2068($s4)
+	sw $t3, 2304($s4)
+	sw $t0, 2308($s4)
+	sw $t0, 2312($s4)
+	sw $t0, 2316($s4)
+	sw $t0, 2320($s4)
+	sw $t3, 2324($s4)
+	sw $t3, 2560($s4)
+	sw $t3, 2564($s4)
+	sw $t3, 2576($s4)
+	sw $t3, 2580($s4)
+	j setup_draw_h
+	
+draw_player_highest_g:
+	li $t0, 0x00feff
+	li $t1, 0x000000
+	li $t2, 0xb3b3b3
+	li $t3, 0x00feff
+	sw $t0, 4($s4)
+	sw $t0, 8($s4)
+	sw $t0, 12($s4)
+	sw $t0, 16($s4)
+	sw $t0, 256($s4)
+	sw $t0, 260($s4)
+	sw $t0, 264($s4)
+	sw $t0, 268($s4)
+	sw $t0, 272($s4)
+	sw $t0, 276($s4)
+	sw $t1, 512($s4)
+	sw $t0, 516($s4)
+	sw $t0, 520($s4)
+	sw $t0, 524($s4)
+	sw $t0, 528($s4)
+	sw $t1, 532($s4)
+	sw $t0, 768($s4)
+	sw $t2, 772($s4)
+	sw $t2, 776($s4)
+	sw $t2, 780($s4)
+	sw $t2, 784($s4)
+	sw $t0, 788($s4)
+	sw $t0, 1024($s4)
+	sw $t0, 1028($s4)
+	sw $t0, 1032($s4)
+	sw $t0, 1036($s4)
+	sw $t0, 1040($s4)
+	sw $t0, 1044($s4)
+	sw $t0, 1280($s4)
+	sw $t2, 1284($s4)
+	sw $t2, 1288($s4)
+	sw $t2, 1292($s4)
+	sw $t2, 1296($s4)
+	sw $t0, 1300($s4)
+	sw $t0, 1536($s4)
+	sw $t0, 1540($s4)
+	sw $t0, 1544($s4)
+	sw $t0, 1548($s4)
+	sw $t0, 1552($s4)
+	sw $t0, 1556($s4)
+	sw $t1, 1792($s4)
+	sw $t0, 1796($s4)
+	sw $t0, 1800($s4)
+	sw $t0, 1804($s4)
+	sw $t0, 1808($s4)
+	sw $t1, 1812($s4)
+	sw $t0, 1796($s4)
+	sw $t0, 2048($s4)
+	sw $t0, 2052($s4)
+	sw $t0, 2056($s4)
+	sw $t0, 2060($s4)
+	sw $t0, 2064($s4)
+	sw $t0, 2068($s4)
+	sw $t3, 2304($s4)
+	sw $t0, 2308($s4)
+	sw $t0, 2312($s4)
+	sw $t0, 2316($s4)
+	sw $t0, 2320($s4)
+	sw $t3, 2324($s4)
+	sw $t3, 2560($s4)
+	sw $t3, 2564($s4)
+	sw $t3, 2576($s4)
+	sw $t3, 2580($s4)
+	sw $t3, 2816($s4)
+	sw $t3, 2836($s4)
+	j setup_draw_h
+
+
+
+
+
 
 
 
@@ -1958,10 +2250,12 @@ draw_health_h:
 	li $t5, 92
 	sub $t5, $t5, $s6
 	li $t6, 0
-	li $t1, 0xFF00FF
 	
+	li $t1, 0x00feff
 draw_health:
+	beq $s6, 92, draw_invincible_health
 	beq $t6, $t5, redraw
+	li $t1, 0xFF00FF
 	sw $t1, 668($t3)
 	sw $t1, 924($t3)
 	sw $t1, 1180($t3)
@@ -1970,6 +2264,15 @@ draw_health:
 	addi $t6, $t6, 4
 	j draw_health
 
+draw_invincible_health:
+	beq $t6, 92, redraw
+	sw $t1, 668($t3)
+	sw $t1, 924($t3)
+	sw $t1, 1180($t3)
+	sw $t1, 1436($t3)
+	addi $t3, $t3, 4
+	addi $t6, $t6, 4
+	j draw_invincible_health
 redraw: 
 li $v0, 32  
 add $a0, $zero, $s7
