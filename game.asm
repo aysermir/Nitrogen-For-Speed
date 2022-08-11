@@ -74,14 +74,18 @@ game_over_screen: .word 0x0000ff, 0x0000ff, 0x0000ff, 0x0000ff, 0x0000ff, 0x0000
 
 
 .text
+setup_drawing:
+	li $v1, 0
+
 setup_draw: 
     li $t5, 0
-    li $t9, 0xb3b3b3
+    li $t9, 0xb3b3b3  
+    beq $v1, 1, change_road_colour         
     la $t0, start_menu
     la $s0, start_menu
-    li $s1,0
-	li $s3, 0    
-	li $s2, 16384	
+    li $s1,0  
+	li $s3, 0      
+	li $s2, 16384	   
     la $s4, start_menu
     addi $s4, $s4, 8048
     li $s7, 50 #s7 stores the speed of the car
@@ -89,7 +93,24 @@ setup_draw:
     li $s6, 0 #stores health of the car 
     li $t6,  16380
     j draw_road  
+
 	
+change_road_colour:
+	li $t5, 0
+    li $t9, 0x00008B      
+    la $t0, start_menu
+    la $s0, start_menu
+    li $s1,0  
+	li $s3, 0      
+	li $s2, 16384	   
+    la $s4, start_menu
+    addi $s4, $s4, 8048
+    li $s7, 50 #s7 stores the speed of the car
+    li $s5, 0 #stores progress of the car
+    li $s6, 0 #stores health of the car 
+    li $t6,  16380
+    j draw_road  	
+				
 draw_road:
 	sw $t9, 0($t0)
 	beq $t5, $t6, setup_draw_center_line
@@ -191,7 +212,7 @@ setup_draw_right_line:
 	li $t1, 0xffffff
 	sw $t1, 0($t0)
 	li $t5, 0
-	li $t6, 8
+	li $t6, 8    
 	li $t8, 12
 	li $t2, 0
 	j draw_right_line
@@ -288,9 +309,26 @@ li $s3, 0
 li $s2, 16384
 
 redraww:	
+	beq $v1, 1, change_redraww
 	addi $s5, $s5, 1
 	li $t5, 0
     li $t1, 0xb3b3b3
+    addi $s0, $s0, 768
+    addi $t0, $s0, 768
+    lw $t6, bottom_right_index
+    la $t3, start_menu
+    addi $t4, $t3, 2304 
+    beq $t4, $s0, rupdate_s
+        
+    add $t0, $s0, $zero
+    lw $t6, bottom_right_index  
+    j rdraw_road 
+
+
+change_redraww:
+	addi $s5, $s5, 1
+	li $t5, 0
+    li $t1, 0x00008B
     addi $s0, $s0, 768
     addi $t0, $s0, 768
     lw $t6, bottom_right_index
@@ -301,6 +339,8 @@ redraww:
     add $t0, $s0, $zero
     lw $t6, bottom_right_index  
     j rdraw_road 
+
+
     
 rupdate_s:
 	subi $s0, $s0, 3840
@@ -373,6 +413,7 @@ rupdate_left_line:
 	
 ##################################
 rsetup_draw_left_black_line:
+	beq $v1, 1, new_rsetup_draw_left_black_line
 	addi $t0, $s0, 1600
 	li $t1, 0xb3b3b3   
 	sw $t1, 0($t0)
@@ -381,7 +422,17 @@ rsetup_draw_left_black_line:
 	li $t8, 12
 	li $t2, 0
 	j rdraw_left_black_line
-	
+
+new_rsetup_draw_left_black_line	:
+	addi $t0, $s0, 1600
+	li $t1, 0x00008B  
+	sw $t1, 0($t0)
+	li $t5, 0
+	li $t6, 8
+	li $t8, 12
+	li $t2, 0
+	j rdraw_left_black_line
+			
 rdraw_left_black_line:
 	beq $t5, $t6, rupdate_left_black_line_pixel
 	beq, $t2, $t8, rupdate_left_black_line
@@ -438,6 +489,7 @@ rupdate_right_line:
 	
 ##################################
 rsetup_draw_right_black_line:
+	beq $v1, 1, new_rsetup_draw_right_black_line
 	addi $t0, $s0, 1724
 	li $t1, 0xb3b3b3
 	sw $t1, 0($t0)
@@ -446,6 +498,16 @@ rsetup_draw_right_black_line:
 	li $t8, 12
 	li $t2, 0
 	j rdraw_right_black_line
+	        
+new_rsetup_draw_right_black_line:
+	addi $t0, $s0, 1724
+	li $t1, 0x00008B
+	sw $t1, 0($t0)
+	li $t5, 0
+	li $t6, 8
+	li $t8, 12
+	li $t2, 0
+	j rdraw_right_black_line	
 	
 rdraw_right_black_line:
 	beq $t5, $t6, rupdate_right_black_line_pixel
@@ -1159,6 +1221,7 @@ keypress_happened:
 	j check_collision
 
 respond_to_q:
+	li $v1, 0
 	j setup_draw
 
 respond_to_s:
@@ -1232,6 +1295,7 @@ check_r:
 	j check_for_r
 
 respond_to_r:
+	li $v1, 0
 	j setup_draw		
 						
 check_collision:
@@ -2154,7 +2218,8 @@ draw_progress_22:
 	j draw_progress	
 draw_progress_23:	
 	addi $t1, $t0, 92
-	j draw_progress	
+	li $v1, 1
+	j setup_draw	
 draw_progress:
 	beq $t1, $t0, draw_health_h
 	li $t9, 0x4FE34F
